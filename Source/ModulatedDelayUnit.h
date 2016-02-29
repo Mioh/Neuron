@@ -14,19 +14,16 @@
 #include "OcillatorUnit.h"
 #include "DelayUnit.h"
 
-class ModulatedDelayUnit : public OcillatorUnit, public DelayUnit () {
+class ModulatedDelayUnit : public OcillatorUnit, public DelayUnit {
 private:
     int m_waveTypeSize = 512;
     
 public:
-    ModulatedDelayUnit(float samplerate, float frequency, enum waveType, int delaySize):
+    ModulatedDelayUnit(float samplerate, float frequency, OcillatorUnit::Wave waveType, int delaySize):
         OcillatorUnit(samplerate, frequency, waveType, m_waveTypeSize),
         DelayUnit(delaySize)
     {
     }
-}
-
-
-
+};
 
 #endif  // MODULATEDDELAYUNIT_H_INCLUDED
