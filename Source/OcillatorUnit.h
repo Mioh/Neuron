@@ -22,7 +22,7 @@ private:
 public:
     enum Wave { SINE };
     
-    OcillatorUnit (float samplerate, int  frequency, int type, int size):
+    OcillatorUnit (float samplerate, int  frequency, enum type, int size):
         Phasor(samplerate, frequency),
         m_type(type),
         m_waveTableSize(size)
@@ -30,7 +30,7 @@ public:
         setType(type);
     }
     
-    OcillatorUnit (float samplerate, int  frequency, int type):
+    OcillatorUnit (float samplerate, int  frequency, enum type):
         m_phasor(samplerate, frequency),
         m_type(type),
         m_waveTableSize(512)

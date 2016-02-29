@@ -19,7 +19,7 @@ private:
     int m_waveTypeSize = 512;
     
 public:
-    ModulatedDelayUnit(float samplerate,float frequency, int waveType, int delaySize):
+    ModulatedDelayUnit(float samplerate, float frequency, enum waveType, int delaySize):
         OcillatorUnit(samplerate, frequency, waveType, m_waveTypeSize),
         DelayUnit(delaySize)
     {
