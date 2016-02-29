@@ -12,16 +12,19 @@
               companyName="Stephen Pearse" companyEmail="stephen.pearse@port.ac.uk">
   <MAINGROUP id="tpq5Bd" name="APDelay">
     <GROUP id="{A90E325C-944C-34DA-359E-0271A83C1030}" name="Source">
-      <FILE id="zOx7cj" name="OcillatorUnit.h" compile="0" resource="0" file="Source/OcillatorUnit.h"/>
-      <FILE id="CkBnlv" name="CustomLook.h" compile="0" resource="0" file="Source/CustomLook.h"/>
-      <FILE id="AwYgP2" name="DelayUnit.h" compile="0" resource="0" file="Source/DelayUnit.h"/>
+      <FILE id="aSUYxp" name="ModulatedDelayUnit.h" compile="1" resource="0"
+            file="Source/ModulatedDelayUnit.h"/>
+      <FILE id="kiqof0" name="Phasor.h" compile="1" resource="0" file="Source/Phasor.h"/>
+      <FILE id="zOx7cj" name="OcillatorUnit.h" compile="1" resource="0" file="Source/OcillatorUnit.h"/>
+      <FILE id="CkBnlv" name="CustomLook.h" compile="1" resource="0" file="Source/CustomLook.h"/>
+      <FILE id="AwYgP2" name="DelayUnit.h" compile="1" resource="0" file="Source/DelayUnit.h"/>
       <FILE id="s72sBH" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
-      <FILE id="uOlv79" name="PluginProcessor.h" compile="0" resource="0"
+      <FILE id="uOlv79" name="PluginProcessor.h" compile="1" resource="0"
             file="Source/PluginProcessor.h"/>
       <FILE id="lw7VJo" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
-      <FILE id="njvlIf" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="njvlIf" name="PluginEditor.h" compile="1" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
