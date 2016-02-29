@@ -27,6 +27,8 @@ public:
         calc_inc();
     }
     
+    virtual ~Phasor();
+    
     float getFrequency() {
         return  m_frequency;
     }
