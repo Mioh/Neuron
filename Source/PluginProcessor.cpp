@@ -231,7 +231,10 @@ void ApdelayAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
-    
+    for (int i = 0; i < m_numberOfDelays; i++) {
+        m_leftDelay[i].clear();
+        m_rightDelay[i].clear();
+    }
 }
 
 float processSignal(int numberOfDelays, float wet, float input,
