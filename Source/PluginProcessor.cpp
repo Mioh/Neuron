@@ -91,7 +91,7 @@ void ApdelayAudioProcessor::setParameter (int index, float value)
             break;
         case DryWet :
             if (value < 0) value = 0;
-            if (value > 0.99) value = 0.99;
+            if (value >= 1) value = 1;
             m_wet = value;
             break;
         default:
@@ -242,12 +242,6 @@ float processSignal(int numberOfDelays, float wet, float input,
 {
     float dry = (1.0f - wet);
     float output = 0.0f;
-    
-    
-    //obtain the phasor's phase
-    //obtain the value from the wavetable
-    
-    
     
     for (int i = 0 ; i < numberOfDelays; i++) {
         // Calculate wet signal

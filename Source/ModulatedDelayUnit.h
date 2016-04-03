@@ -33,7 +33,7 @@ public:
     double process(double delay) {
         double phase = OcillatorUnit::getValue();
         OcillatorUnit::tick();
-        //delay = phase * delay;
+        delay = phase * delay;
         
         return DelayUnit::delay(delay);
     }
