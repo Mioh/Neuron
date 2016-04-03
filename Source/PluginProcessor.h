@@ -12,14 +12,14 @@
 #define PLUGINPROCESSOR_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "DelayUnit.h"
+#include "ModulatedDelayUnit.h"
 
 //==============================================================================
 /**
 */
 class ApdelayAudioProcessor  : public AudioProcessor
 {
-    DelayUnit m_leftDelay[2], m_rightDelay[2];
+    ModulatedDelayUnit *m_leftDelay, *m_rightDelay;
     int m_numberOfDelays;
     float m_LeftDelayMS,m_rightDelayMS, m_leftFeedback,m_rightFeedback,
     m_samplerate, m_wet;

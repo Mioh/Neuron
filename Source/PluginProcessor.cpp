@@ -14,21 +14,25 @@
 
 //==============================================================================
 ApdelayAudioProcessor::ApdelayAudioProcessor():
-    m_leftDelay{DelayUnit(44100 * 5), DelayUnit(44100 * 5)},
-    m_rightDelay{DelayUnit(44100 * 5), DelayUnit(44100 * 5)},
-    m_numberOfDelays(2),
-    m_LeftDelayMS(50),
-    m_rightDelayMS(500),
-    m_leftFeedback(0.7),
-    m_rightFeedback(0.3),
+    //m_rightDelay{DelayUnit(44100 * 5), DelayUnit(44100 * 5)},
+    m_numberOfDelays(1),
+    m_LeftDelayMS(20),
+    m_rightDelayMS(20),
+    m_leftFeedback(0.0),
+    m_rightFeedback(0.0),
     m_samplerate(44100),
-    m_wet(0.5)
+    m_wet(0.8)
 {
+
+    m_leftDelay = new ModulatedDelayUnit[m_numberOfDelays];
+    m_rightDelay = new ModulatedDelayUnit[m_numberOfDelays];
     
 }
 
 ApdelayAudioProcessor::~ApdelayAudioProcessor()
 {
+    delete[] m_leftDelay;
+    delete[] m_rightDelay;
     
 }
 
@@ -227,25 +231,25 @@ void ApdelayAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
+    
 }
 
 float processSignal(int numberOfDelays, float wet, float input,
-           DelayUnit *delayUnit, float delayMS, float samplerateMS, float feedback)
+           ModulatedDelayUnit *delayUnit, float delayMS, float samplerateMS, float feedback)
 {
     float dry = (1.0f - wet);
     float output = 0.0f;
     
     
     //obtain the phasor's phase
-    //scale the phase to fit the size of the wavetable
     //obtain the value from the wavetable
     
     
     
     for (int i = 0 ; i < numberOfDelays; i++) {
         // Calculate wet signal
-        output += delayUnit[i].delay(delayMS * samplerateMS);
-        // Send signald feedback
+        output += delayUnit[i].process(delayMS * samplerateMS);
+        // Send signal feedback
         delayUnit[i].write(feedback * input);
     }
     // Normalize wet signal

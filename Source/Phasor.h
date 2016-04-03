@@ -22,12 +22,14 @@ public:
     
     Phasor();
     Phasor(float samplerate, float frequency =1) {
+        m_phase = 0.0f;
         m_samplerate = samplerate;
         m_frequency = frequency;
         calc_inc();
+        std::cout << "\nIn Phasor, Constructor called" << "Frequency: " << m_frequency;
     }
     
-    virtual ~Phasor();
+    virtual ~Phasor(){};
     
     float getFrequency() {
         return  m_frequency;
@@ -45,7 +47,7 @@ public:
     }
     
     void calc_inc() {
-        m_inc = m_frequency/m_samplerate;
+        m_inc = ((float) m_frequency)/ ((float) m_samplerate);
     }
     
     void setFrequency(float frequency) {

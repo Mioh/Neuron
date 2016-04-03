@@ -16,13 +16,26 @@
 
 class ModulatedDelayUnit : public OcillatorUnit, public DelayUnit {
 private:
-    int m_waveTypeSize = 512;
     
 public:
     ModulatedDelayUnit(float samplerate, float frequency, OcillatorUnit::Wave waveType, int delaySize):
-        OcillatorUnit(samplerate, frequency, waveType, m_waveTypeSize),
+        OcillatorUnit(samplerate, frequency, waveType),
         DelayUnit(delaySize)
     {
+    }
+    
+    ModulatedDelayUnit():
+    OcillatorUnit(44100, 2.0, OcillatorUnit::SINE),
+    DelayUnit(44100)
+    {
+    }
+    
+    double process(double delay) {
+        double phase = OcillatorUnit::getValue();
+        OcillatorUnit::tick();
+        //delay = phase * delay;
+        
+        return DelayUnit::delay(delay);
     }
 };
 
