@@ -28,7 +28,13 @@ public:
 		m_delayBuffer = new float[m_maxDelay];
 		clear();
 	}
-	DelayUnit();
+    DelayUnit() :
+    m_maxDelay(44100),
+    m_writePos(0)
+    {
+        m_delayBuffer = new float[m_maxDelay];
+        clear();
+    };
 	
 	~DelayUnit(){
 		delete[] m_delayBuffer;
@@ -74,7 +80,39 @@ public:
 		while (pos > m_maxDelay) {
 			pos -= m_maxDelay;
 		}
-		return m_delayBuffer[pos];
+        
+        return m_delayBuffer[pos];
+        
+    }
+    
+    float delay2(double time){
+        
+        double pos = m_writePos - time;
+        
+        while (pos < 0 ) {
+            pos += m_maxDelay;
+        }
+        
+        while (pos > m_maxDelay) {
+            pos -= m_maxDelay;
+        }
+        
+        double previousSampleValue, nextSampleValue, doubleIndex;
+        double fraction = modf(pos, &doubleIndex);
+        int index = (int) doubleIndex;
+        
+        previousSampleValue = m_delayBuffer[index];
+        
+        if (index != (m_maxDelay-1)) {
+            nextSampleValue = m_delayBuffer[index+1];
+        } else {
+            nextSampleValue = m_delayBuffer[0];
+        }
+        
+        double interpolatedValue = (fraction * previousSampleValue) +
+        ((1-fraction) * nextSampleValue);
+        
+        return interpolatedValue;
 	}
 };
 

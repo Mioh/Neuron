@@ -14,7 +14,6 @@
 
 //==============================================================================
 ApdelayAudioProcessor::ApdelayAudioProcessor():
-    //m_rightDelay{DelayUnit(44100 * 5), DelayUnit(44100 * 5)},
     m_numberOfDelays(1),
     m_LeftDelayMS(20),
     m_rightDelayMS(20),
@@ -24,15 +23,17 @@ ApdelayAudioProcessor::ApdelayAudioProcessor():
     m_wet(0.8)
 {
 
-    m_leftDelay = new ModulatedDelayUnit[m_numberOfDelays];
-    m_rightDelay = new ModulatedDelayUnit[m_numberOfDelays];
+    for (int i = 0; i < m_numberOfDelays ; i++) {
+        m_leftDelay.add(new ModulatedDelayUnit());
+        m_rightDelay.add(new ModulatedDelayUnit());
+    }
     
 }
 
 ApdelayAudioProcessor::~ApdelayAudioProcessor()
 {
-    delete[] m_leftDelay;
-    delete[] m_rightDelay;
+    //delete[] m_leftDelay;
+    //delete[] m_rightDelay;
     
 }
 
@@ -218,8 +219,8 @@ void ApdelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     for (int i = 0; i < m_numberOfDelays; i++) {
-        m_rightDelay[i].clear();
-        m_leftDelay[i].clear();
+        m_rightDelay[i]->clear();
+        m_leftDelay[i]->clear();
     }
     
     m_samplerate = sampleRate;
@@ -232,25 +233,27 @@ void ApdelayAudioProcessor::releaseResources()
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
     for (int i = 0; i < m_numberOfDelays; i++) {
-        m_leftDelay[i].clear();
-        m_rightDelay[i].clear();
+        m_leftDelay[i]->clear();
+        m_rightDelay[i]->clear();
     }
 }
 
 float processSignal(int numberOfDelays, float wet, float input,
-           ModulatedDelayUnit *delayUnit, float delayMS, float samplerateMS, float feedback)
+           DelayArray &delayUnit, float delayMS, float samplerateMS, float feedback)
 {
     float dry = (1.0f - wet);
     float output = 0.0f;
+    float volumeRatio = 1.0f/((float) numberOfDelays);
     
     for (int i = 0 ; i < numberOfDelays; i++) {
         // Calculate wet signal
-        output += delayUnit[i].process(delayMS * samplerateMS);
-        // Send signal feedback
-        delayUnit[i].write(feedback * input);
+        output += delayUnit[i]->process(delayMS);
+        //output += delayUnit[i]->delay(delayMS * samplerateMS);
+        // Write signal + feedback to delay buffer
+        delayUnit[i]->write(input + (feedback * output));
     }
     // Normalize wet signal
-    output = wet * output / numberOfDelays;
+    output = wet * output * volumeRatio;
     // Add dry signal
     output +=  dry * input;
     return output;

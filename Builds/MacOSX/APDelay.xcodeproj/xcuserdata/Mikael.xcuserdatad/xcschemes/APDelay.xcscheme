@@ -41,6 +41,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
+         BundleIdentifier = "com.roli.pluginhost"
          FilePath = "/Applications/Juce/examples/audio plugin host/Builds/MacOSX/build/Debug/Plugin Host.app">
       </PathRunnable>
       <MacroExpansion>

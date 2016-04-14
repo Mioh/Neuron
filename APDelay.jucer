@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="CaXd0d" name="APDelay" projectType="audioplug" version="1.0.0"
-              bundleIdentifier="com.yourcompany.APDelay" includeBinaryInAppConfig="1"
-              buildVST="1" buildVST3="1" buildAU="0" buildRTAS="0" buildAAX="0"
-              pluginName="APDelay" pluginDesc="APDelay" pluginManufacturer="SPearse"
+<JUCERPROJECT id="CaXd0d" name="Chorus" projectType="audioplug" version="1.0.0"
+              bundleIdentifier="com.yourcompany.chorus" includeBinaryInAppConfig="1"
+              buildVST="0" buildVST3="1" buildAU="0" buildRTAS="0" buildAAX="0"
+              pluginName="APDelay" pluginDesc="APDelay" pluginManufacturer="Ohlsson"
               pluginManufacturerCode="SPPL" pluginCode="SPD1" pluginChannelConfigs="{2, 2}"
               pluginIsSynth="0" pluginWantsMidiIn="0" pluginProducesMidiOut="0"
               pluginSilenceInIsSilenceOut="0" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="APDelayAU" pluginRTASCategory="" aaxIdentifier="com.yourcompany.APDelay"
               pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.2.0"
-              companyName="Stephen Pearse" companyEmail="stephen.pearse@port.ac.uk">
-  <MAINGROUP id="tpq5Bd" name="APDelay">
+              companyName="Mikael Ohlsson" companyEmail="">
+  <MAINGROUP id="tpq5Bd" name="Chorus">
     <GROUP id="{A90E325C-944C-34DA-359E-0271A83C1030}" name="Source">
+      <FILE id="L7EXIS" name="CompressorUnit.h" compile="0" resource="0"
+            file="Source/CompressorUnit.h"/>
       <FILE id="aSUYxp" name="ModulatedDelayUnit.h" compile="1" resource="0"
             file="Source/ModulatedDelayUnit.h"/>
       <FILE id="kiqof0" name="Phasor.h" compile="1" resource="0" file="Source/Phasor.h"/>

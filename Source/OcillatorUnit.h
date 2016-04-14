@@ -18,8 +18,8 @@ class OcillatorUnit : public Phasor {
 public: enum Wave { SINE };
     
 private:
-    //double *m_waveTable = nullptr;
-    double m_waveTable[512];
+    double *m_waveTable = nullptr;
+    //double m_waveTable[512];
     int m_waveTableSize = 0;
     double m_doubleIndex = 0.0;
     OcillatorUnit::Wave m_type;
@@ -35,7 +35,8 @@ public:
     }
     
     void setType (OcillatorUnit::Wave type) {
-        if (type != m_type) {
+        //This screws things upp as m_type is initiallized to SINE!!!
+        //if (type != m_type) {
             m_type = type;
             
             switch (type) {
@@ -45,7 +46,7 @@ public:
                 default:
                     fillWaveTable(&std::sin);
             }
-        }
+        //}
     }
     
     double getValue() {
@@ -54,7 +55,7 @@ public:
         int index = (int) doubleIndex;
         
         previousSampleValue = m_waveTable[index];
-        if (index != m_waveTableSize) {
+        if (index != (m_waveTableSize -1 )) {
             nextSampleValue = m_waveTable[index + 1];
         } else {
             nextSampleValue = m_waveTable[0];
@@ -77,16 +78,16 @@ public:
     }
     
     ~OcillatorUnit() {
-//        if (m_waveTable != nullptr) {
-//            delete m_waveTable;
-//        }
+        if (m_waveTable != nullptr) {
+            delete m_waveTable;
+        }
     }
     
     OcillatorUnit (float samplerate, float  frequency, Wave type, int size):
         Phasor(samplerate, frequency),
         m_waveTableSize(size)
     {
-        //m_waveTable = new double[m_waveTableSize];
+        m_waveTable = new double[m_waveTableSize];
         setType(type);
     }
     
@@ -94,7 +95,7 @@ public:
         Phasor(samplerate, frequency),
         m_waveTableSize(512)
     {
-        //m_waveTable = new double[m_waveTableSize];
+        m_waveTable = new double[m_waveTableSize];
         setType(type);
     }
     
@@ -102,7 +103,7 @@ public:
         Phasor(samplerate, frequency),
         m_waveTableSize(512)
     {
-        //m_waveTable = new double[m_waveTableSize];
+        m_waveTable = new double[m_waveTableSize];
         setType(SINE);
     }
 };

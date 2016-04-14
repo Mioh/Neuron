@@ -13,13 +13,14 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "ModulatedDelayUnit.h"
+#include "DelayUnit.h"
+
+typedef OwnedArray<ModulatedDelayUnit> DelayArray;
 
 //==============================================================================
-/**
-*/
 class ApdelayAudioProcessor  : public AudioProcessor
 {
-    ModulatedDelayUnit *m_leftDelay, *m_rightDelay;
+    DelayArray m_leftDelay, m_rightDelay;
     int m_numberOfDelays;
     float m_LeftDelayMS,m_rightDelayMS, m_leftFeedback,m_rightFeedback,
     m_samplerate, m_wet;

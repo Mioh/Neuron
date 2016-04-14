@@ -7,9 +7,9 @@
 	<key>CFBundleExecutable</key>
 	<string>APDelay</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.yourcompany.APDelay</string>
+	<string>com.yourcompany.chorus</string>
 	<key>CFBundleName</key>
-	<string>APDelay</string>
+	<string>Chorus</string>
 	<key>CFBundlePackageType</key>
 	<string>TDMw</string>
 	<key>CFBundleShortVersionString</key>
@@ -35,6 +35,6 @@
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Stephen Pearse</string>
+	<string>Mikael Ohlsson</string>
 </dict>
 </plist>
