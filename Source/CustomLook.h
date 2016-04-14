@@ -19,25 +19,48 @@ class CustomLook : public LookAndFeel_V3{
 public:
     void 	drawLinearSlider (Graphics & g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle, Slider & slider){
         
-        g.setColour(Colours::lightgrey);
+        Colour blue = Colour(33,150,243);
+        //Linear
+        g.setColour(blue);
+        g.setOpacity(0.54f);
         
         int thirdH = height * 0.33;
         
+        g.fillRoundedRectangle(x, thirdH, width, thirdH , 2);
         
-        g.fillRoundedRectangle(x,thirdH,width   ,thirdH,2);
-        
-        g.setColour(Colour(125,125,125));
-        g.fillRoundedRectangle(x + 2,thirdH +2 ,width - 4   ,thirdH -4,2);
-        
-        
-        g.setColour(Colours::whitesmoke);
+        g.setColour(blue);
+        g.fillRoundedRectangle(0, thirdH, (int)sliderPos, thirdH, 2);
         
         
+    }
+    
+    void drawRotarySlider (	Graphics & 	g,
+                                                 int 	x,
+                                                 int 	y,
+                                                 int 	width,
+                                                 int 	height,
+                                                 float 	sliderPosProportional,
+                                                 float 	rotaryStartAngle,
+                                                 float 	rotaryEndAngle,
+                                                 Slider & 	slider )
+    {
         
         
-        g.fillRect((int)sliderPos, thirdH +2 , 2, thirdH -4);
+        Colour blue = Colour(33,150,243);
+        int xPos = x + width/2 - height/2;
         
+        g.setColour(blue);
+        g.setOpacity(0.54f);
+        g.fillEllipse(xPos,
+                      y,
+                      height,
+                      height);
         
+        g.setColour(blue);
+        g.fillEllipse(xPos + height/2 * (1 - sliderPosProportional),
+                      y + height/2 * (1 - sliderPosProportional),
+                      height * sliderPosProportional,
+                      height * sliderPosProportional);
         
         
     }

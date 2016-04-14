@@ -226,10 +226,10 @@
  #define JucePlugin_Build_AAX              0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "APDelay"
+ #define JucePlugin_Name                   "Chorus"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "APDelay"
+ #define JucePlugin_Desc                   "Chorus"
 #endif
 #ifndef  JucePlugin_Manufacturer
  #define JucePlugin_Manufacturer           "Ohlsson"

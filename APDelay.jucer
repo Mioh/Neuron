@@ -3,7 +3,7 @@
 <JUCERPROJECT id="CaXd0d" name="Chorus" projectType="audioplug" version="1.0.0"
               bundleIdentifier="com.yourcompany.chorus" includeBinaryInAppConfig="1"
               buildVST="0" buildVST3="1" buildAU="0" buildRTAS="0" buildAAX="0"
-              pluginName="APDelay" pluginDesc="APDelay" pluginManufacturer="Ohlsson"
+              pluginName="Chorus" pluginDesc="Chorus" pluginManufacturer="Ohlsson"
               pluginManufacturerCode="SPPL" pluginCode="SPD1" pluginChannelConfigs="{2, 2}"
               pluginIsSynth="0" pluginWantsMidiIn="0" pluginProducesMidiOut="0"
               pluginSilenceInIsSilenceOut="0" pluginEditorRequiresKeys="0"

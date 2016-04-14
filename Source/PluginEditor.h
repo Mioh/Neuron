@@ -52,8 +52,8 @@ public:
     void sliderValueChanged (Slider* sliderThatWasMoved);
 
     // Binary resources:
-    static const char* screenShot20151119At18_08_57_png;
-    static const int screenShot20151119At18_08_57_pngSize;
+    //static const char* screenShot20151119At18_08_57_png;
+    //static const int screenShot20151119At18_08_57_pngSize;
 
 
 private:
@@ -69,7 +69,7 @@ private:
     ScopedPointer<Slider> m_leftFeedbackSlider;
     ScopedPointer<Slider> m_rightFeedbackSlider;
     ScopedPointer<Slider> m_dryWetSlider;
-    Image cachedImage_screenShot20151119At18_08_57_png_1;
+    //Image cachedImage_screenShot20151119At18_08_57_png_1;
 
 
     //==============================================================================

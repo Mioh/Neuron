@@ -35,7 +35,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     //[/Constructor_pre]
 
     addAndMakeVisible (m_leftDelaySlider = new Slider ("left Delay"));
-    m_leftDelaySlider->setRange (1, 5000, 0);
+    m_leftDelaySlider->setRange (1, 100, 1);
     m_leftDelaySlider->setSliderStyle (Slider::LinearHorizontal);
     m_leftDelaySlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
     m_leftDelaySlider->setColour (Slider::textBoxTextColourId, Colours::white);
@@ -44,7 +44,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_leftDelaySlider->addListener (this);
 
     addAndMakeVisible (m_rightDelaySlider = new Slider ("Right Delay"));
-    m_rightDelaySlider->setRange (1, 5000, 0);
+    m_rightDelaySlider->setRange (1, 100, 1);
     m_rightDelaySlider->setSliderStyle (Slider::LinearHorizontal);
     m_rightDelaySlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
     m_rightDelaySlider->setColour (Slider::textBoxTextColourId, Colours::white);
@@ -55,6 +55,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     addAndMakeVisible (m_leftFeedbackSlider = new Slider ("Left Feedback"));
     m_leftFeedbackSlider->setRange (0, 1, 0);
     m_leftFeedbackSlider->setSliderStyle (Slider::LinearHorizontal);
+    m_leftFeedbackSlider->setColour(Slider::backgroundColourId, Colours::white);
     m_leftFeedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
     m_leftFeedbackSlider->setColour (Slider::textBoxTextColourId, Colours::white);
     m_leftFeedbackSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -71,15 +72,19 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_rightFeedbackSlider->addListener (this);
 
     addAndMakeVisible (m_dryWetSlider = new Slider ("Dry/Wet"));
-    m_dryWetSlider->setRange (0, 1, 0);
-    m_dryWetSlider->setSliderStyle (Slider::LinearHorizontal);
+    m_dryWetSlider->setRange (0, 100, 1);
+    m_dryWetSlider->setTextValueSuffix (" %");
+    m_dryWetSlider->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
     m_dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
+    
+    m_dryWetSlider->setColour(Slider::rotarySliderFillColourId, Colours::white);
+    m_dryWetSlider->setColour(Slider::rotarySliderOutlineColourId, Colours::transparentWhite);
     m_dryWetSlider->setColour (Slider::textBoxTextColourId, Colours::white);
     m_dryWetSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     m_dryWetSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
     m_dryWetSlider->addListener (this);
 
-    cachedImage_screenShot20151119At18_08_57_png_1 = ImageCache::getFromMemory (screenShot20151119At18_08_57_png, screenShot20151119At18_08_57_pngSize);
+    //cachedImage_screenShot20151119At18_08_57_png_1 = ImageCache::getFromMemory (screenShot20151119At18_08_57_png, screenShot20151119At18_08_57_pngSize);
 
     //[UserPreSize]
     
@@ -135,8 +140,8 @@ void ApdelayAudioProcessorEditor::paint (Graphics& g)
 
     g.fillAll (Colour (0xff626262));
 
-    g.setColour (Colour (0xff7d7d7d));
-    g.fillRoundedRectangle (24.0f, 11.0f, 312.0f, 333.0f, 10.000f);
+    //g.setColour (Colour (0xff7d7d7d));
+    //g.fillRoundedRectangle (24.0f, 11.0f, 312.0f, 333.0f, 10.000f);
 
     g.setColour (Colours::white);
     g.setFont (Font (12.00f, Font::plain));
@@ -165,13 +170,13 @@ void ApdelayAudioProcessorEditor::paint (Graphics& g)
     g.setColour (Colours::white);
     g.setFont (Font (12.00f, Font::plain));
     g.drawText (TRANS("Dry/Wet"),
-                48, 355, 200, 30,
-                Justification::centredLeft, true);
+                48, 355, 250, 30,
+                Justification::centredBottom, true);
 
     g.setColour (Colours::black);
-    g.drawImage (cachedImage_screenShot20151119At18_08_57_png_1,
-                 264, 275, 60, 63,
-                 0, 0, cachedImage_screenShot20151119At18_08_57_png_1.getWidth(), cachedImage_screenShot20151119At18_08_57_png_1.getHeight());
+//    g.drawImage (cachedImage_screenShot20151119At18_08_57_png_1,
+//                 264, 275, 60, 63,
+//                 0, 0, cachedImage_screenShot20151119At18_08_57_png_1.getWidth(), cachedImage_screenShot20151119At18_08_57_png_1.getHeight());
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -612,8 +617,8 @@ static const unsigned char resource_ApdelayAudioProcessorEditor_screenShot201511
 239,150,164,27,112,67,89,69,110,221,146,183,63,104,64,66,142,50,176,172,61,60,104,232,85,28,194,118,116,175,176,193,186,53,176,181,147,143,29,186,6,190,87,56,59,202,192,2,13,56,179,56,208,217,153,196,
 210,138,142,96,90,102,79,160,144,131,111,27,79,140,39,12,247,4,99,143,231,192,255,7,92,92,162,196,185,164,0,25,0,0,0,0,73,69,78,68,174,66,96,130,0,0};
 
-const char* ApdelayAudioProcessorEditor::screenShot20151119At18_08_57_png = (const char*) resource_ApdelayAudioProcessorEditor_screenShot20151119At18_08_57_png;
-const int ApdelayAudioProcessorEditor::screenShot20151119At18_08_57_pngSize = 17569;
+//const char* ApdelayAudioProcessorEditor::screenShot20151119At18_08_57_png = (const char*) resource_ApdelayAudioProcessorEditor_screenShot20151119At18_08_57_png;
+//const int ApdelayAudioProcessorEditor::screenShot20151119At18_08_57_pngSize = 17569;
 
 
 //[EndFile] You can add extra defines here...

@@ -81,19 +81,19 @@ void ApdelayAudioProcessor::setParameter (int index, float value)
             m_rightDelayMS = value;
             break;
         case LeftFeedback :
-            if (value < 0) value = 0;
+            if (value < 0.0) value = 0.0;
             if (value > 0.99) value = 0.99;
             m_leftFeedback = value;
             break;
         case RightFeedback :
-            if (value < 0) value = 0;
+            if (value < 0.0) value = 0.0;
             if (value > 0.99) value = 0.99;
             m_rightFeedback = value;
             break;
         case DryWet :
-            if (value < 0) value = 0;
-            if (value >= 1) value = 1;
-            m_wet = value;
+            if (value < 0.0) value = 0.0;
+            if (value >= 100.0) value = 100.0;
+            m_wet = value / 100.0;
             break;
         default:
             break;
