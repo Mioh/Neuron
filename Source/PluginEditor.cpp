@@ -36,37 +36,41 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
 
     addAndMakeVisible (m_leftDelaySlider = new Slider ("left Delay"));
     m_leftDelaySlider->setRange (1, 100, 1);
+    m_leftDelaySlider->setTextValueSuffix (" ms");
     m_leftDelaySlider->setSliderStyle (Slider::LinearHorizontal);
     m_leftDelaySlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
-    m_leftDelaySlider->setColour (Slider::textBoxTextColourId, Colours::white);
+    m_leftDelaySlider->setColour (Slider::textBoxTextColourId, Colours::black);
     m_leftDelaySlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     m_leftDelaySlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
     m_leftDelaySlider->addListener (this);
 
     addAndMakeVisible (m_rightDelaySlider = new Slider ("Right Delay"));
     m_rightDelaySlider->setRange (1, 100, 1);
+    m_rightDelaySlider->setTextValueSuffix (" ms");
     m_rightDelaySlider->setSliderStyle (Slider::LinearHorizontal);
     m_rightDelaySlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
-    m_rightDelaySlider->setColour (Slider::textBoxTextColourId, Colours::white);
+    m_rightDelaySlider->setColour (Slider::textBoxTextColourId, Colours::black);
     m_rightDelaySlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     m_rightDelaySlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
     m_rightDelaySlider->addListener (this);
 
     addAndMakeVisible (m_leftFeedbackSlider = new Slider ("Left Feedback"));
-    m_leftFeedbackSlider->setRange (0, 1, 0);
+    m_leftFeedbackSlider->setRange (0, 100, 1);
+    m_leftFeedbackSlider->setTextValueSuffix (" %");
     m_leftFeedbackSlider->setSliderStyle (Slider::LinearHorizontal);
-    m_leftFeedbackSlider->setColour(Slider::backgroundColourId, Colours::white);
+    m_leftFeedbackSlider->setColour(Slider::backgroundColourId, Colours::black);
     m_leftFeedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
-    m_leftFeedbackSlider->setColour (Slider::textBoxTextColourId, Colours::white);
+    m_leftFeedbackSlider->setColour (Slider::textBoxTextColourId, Colours::black);
     m_leftFeedbackSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     m_leftFeedbackSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
     m_leftFeedbackSlider->addListener (this);
 
     addAndMakeVisible (m_rightFeedbackSlider = new Slider ("Right Feedback"));
-    m_rightFeedbackSlider->setRange (0, 1, 0);
+    m_rightFeedbackSlider->setRange (0, 100, 1);
+    m_rightFeedbackSlider->setTextValueSuffix (" %");
     m_rightFeedbackSlider->setSliderStyle (Slider::LinearHorizontal);
     m_rightFeedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
-    m_rightFeedbackSlider->setColour (Slider::textBoxTextColourId, Colours::white);
+    m_rightFeedbackSlider->setColour (Slider::textBoxTextColourId, Colours::black);
     m_rightFeedbackSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     m_rightFeedbackSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
     m_rightFeedbackSlider->addListener (this);
@@ -76,13 +80,23 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_dryWetSlider->setTextValueSuffix (" %");
     m_dryWetSlider->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
     m_dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
-    
-    m_dryWetSlider->setColour(Slider::rotarySliderFillColourId, Colours::white);
+    m_dryWetSlider->setColour(Slider::rotarySliderFillColourId, Colours::black);
     m_dryWetSlider->setColour(Slider::rotarySliderOutlineColourId, Colours::transparentWhite);
-    m_dryWetSlider->setColour (Slider::textBoxTextColourId, Colours::white);
+    m_dryWetSlider->setColour (Slider::textBoxTextColourId, Colours::black);
     m_dryWetSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     m_dryWetSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
     m_dryWetSlider->addListener (this);
+    
+    addAndMakeVisible (m_nUnitsSlider = new Slider ("nUnits"));
+    m_nUnitsSlider->setRange (1, 16, 1);
+    m_nUnitsSlider->setSliderStyle (Slider::LinearVertical);
+    m_nUnitsSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
+    m_nUnitsSlider->setColour(Slider::rotarySliderFillColourId, Colours::black);
+    m_nUnitsSlider->setColour(Slider::rotarySliderOutlineColourId, Colours::transparentWhite);
+    m_nUnitsSlider->setColour (Slider::textBoxTextColourId, Colours::black);
+    m_nUnitsSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    m_nUnitsSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
+    m_nUnitsSlider->addListener (this);
 
     //cachedImage_screenShot20151119At18_08_57_png_1 = ImageCache::getFromMemory (screenShot20151119At18_08_57_png, screenShot20151119At18_08_57_pngSize);
 
@@ -91,7 +105,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     
     //[/UserPreSize]
 
-    setSize (500, 500);
+    setSize (342, 440);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -138,39 +152,51 @@ void ApdelayAudioProcessorEditor::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xff626262));
+    g.fillAll (Colour(224,224,224));
 
     //g.setColour (Colour (0xff7d7d7d));
     //g.fillRoundedRectangle (24.0f, 11.0f, 312.0f, 333.0f, 10.000f);
 
-    g.setColour (Colours::white);
-    g.setFont (Font (12.00f, Font::plain));
-    g.drawText (TRANS("Left Delay Time(MS)"),
-                48, 51, 200, 30,
+    g.setColour (Colours::black);
+    g.setOpacity(0.54f);
+    g.setFont (Font (14.00f, Font::plain));
+    g.drawText (TRANS("LEFT DELAY"),
+                28, 36, 200, 30,
                 Justification::centredLeft, true);
 
-    g.setColour (Colours::white);
-    g.setFont (Font (12.00f, Font::plain));
-    g.drawText (TRANS("Right Delay Time(MS)"),
-                48, 123, 200, 30,
+    g.setColour (Colours::black);
+    g.setOpacity(0.54f);
+    g.setFont (Font (14.00f, Font::plain));
+    g.drawText (TRANS("RIGHT DELAY"),
+                28, 108, 200, 30,
                 Justification::centredLeft, true);
 
-    g.setColour (Colours::white);
-    g.setFont (Font (12.00f, Font::plain));
-    g.drawText (TRANS("Left Feedback"),
-                48, 195, 200, 30,
+    g.setColour (Colours::black);
+    g.setOpacity(0.54f);
+    g.setFont (Font (14.00f, Font::plain));
+    g.drawText (TRANS("LEFT FEEDBACK"),
+                28, 180, 200, 30,
                 Justification::centredLeft, true);
 
-    g.setColour (Colours::white);
-    g.setFont (Font (12.00f, Font::plain));
-    g.drawText (TRANS("Right Feedback"),
-                48, 275, 200, 30,
+    g.setColour (Colours::black);
+    g.setOpacity(0.54f);
+    g.setFont (Font (14.00f, Font::plain));
+    g.drawText (TRANS("RIGHT FEEDBACK"),
+                28, 260, 200, 30,
                 Justification::centredLeft, true);
                 
-    g.setColour (Colours::white);
-    g.setFont (Font (12.00f, Font::plain));
-    g.drawText (TRANS("Dry/Wet"),
-                48, 355, 250, 30,
+    g.setColour (Colours::black);
+    g.setOpacity(0.54f);
+    g.setFont (Font (14.00f, Font::plain));
+    g.drawText (TRANS("DRY/WET"),
+                24, 392, 312, 30,
+                Justification::centredBottom, true);
+    
+    g.setColour (Colours::black);
+    g.setOpacity(0.54f);
+    g.setFont (Font (14.00f, Font::plain));
+    g.drawText (TRANS("UNITS"),
+                342 / 6 - 20, 392, 64, 30,
                 Justification::centredBottom, true);
 
     g.setColour (Colours::black);
@@ -187,11 +213,12 @@ void ApdelayAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    m_leftDelaySlider->setBounds (24, 16, 312, 64);
-    m_rightDelaySlider->setBounds (24, 88, 312, 64);
-    m_leftFeedbackSlider->setBounds (24, 160, 312, 64);
-    m_rightFeedbackSlider->setBounds (24, 240, 312, 64);
-    m_dryWetSlider->setBounds (24, 312, 312, 64);
+    m_leftDelaySlider->setBounds (24, 16, 312, 45);
+    m_rightDelaySlider->setBounds (24, 88, 312, 45);
+    m_leftFeedbackSlider->setBounds (24, 160, 312, 45);
+    m_rightFeedbackSlider->setBounds (24, 240, 312, 45);
+    m_dryWetSlider->setBounds (24 + (312 - 90) / 2, 320, 90, 90);
+    m_nUnitsSlider->setBounds (342 / 6, 320 -16, 24, 106);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }

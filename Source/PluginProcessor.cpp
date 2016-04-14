@@ -20,7 +20,7 @@ ApdelayAudioProcessor::ApdelayAudioProcessor():
     m_leftFeedback(0.0),
     m_rightFeedback(0.0),
     m_samplerate(44100),
-    m_wet(0.8)
+    m_wet(0.5)
 {
 
     for (int i = 0; i < m_numberOfDelays ; i++) {
@@ -82,17 +82,15 @@ void ApdelayAudioProcessor::setParameter (int index, float value)
             break;
         case LeftFeedback :
             if (value < 0.0) value = 0.0;
-            if (value > 0.99) value = 0.99;
-            m_leftFeedback = value;
+            if (value > 99.0) value = 99.0;
+            m_leftFeedback = value / 100.0;
             break;
         case RightFeedback :
             if (value < 0.0) value = 0.0;
-            if (value > 0.99) value = 0.99;
-            m_rightFeedback = value;
+            if (value > 99.0) value = 99.0;
+            m_rightFeedback = value / 100.0;
             break;
         case DryWet :
-            if (value < 0.0) value = 0.0;
-            if (value >= 100.0) value = 100.0;
             m_wet = value / 100.0;
             break;
         default:

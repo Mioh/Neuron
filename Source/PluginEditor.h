@@ -69,9 +69,7 @@ private:
     ScopedPointer<Slider> m_leftFeedbackSlider;
     ScopedPointer<Slider> m_rightFeedbackSlider;
     ScopedPointer<Slider> m_dryWetSlider;
-    //Image cachedImage_screenShot20151119At18_08_57_png_1;
-
-
+    ScopedPointer<Slider> m_nUnitsSlider;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ApdelayAudioProcessorEditor)
 };
