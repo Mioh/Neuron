@@ -89,6 +89,7 @@ public:
         
         double pos = m_writePos - time;
         
+        //Make shure the delay does not overshoot the buffer
         while (pos < 0 ) {
             pos += m_maxDelay;
         }
@@ -97,6 +98,8 @@ public:
             pos -= m_maxDelay;
         }
         
+        //Interpolate the signal as the delay could try to access a value
+        //inbetween what is stored in the buffer
         double previousSampleValue, nextSampleValue, doubleIndex;
         double fraction = modf(pos, &doubleIndex);
         int index = (int) doubleIndex;
@@ -109,8 +112,14 @@ public:
             nextSampleValue = m_delayBuffer[0];
         }
         
-        double interpolatedValue = (fraction * previousSampleValue) +
-        ((1-fraction) * nextSampleValue);
+        double interpolatedValue = ((1 - fraction) * previousSampleValue) +
+        (fraction * nextSampleValue);
+        
+//        double interpolatedValue = (fraction * previousSampleValue) +
+//        ((1-fraction) * nextSampleValue);
+        
+//        double interpolatedValue = previousSampleValue +
+//        (fraction * nextSampleValue);
         
         return interpolatedValue;
 	}

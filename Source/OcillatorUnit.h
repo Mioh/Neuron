@@ -61,8 +61,14 @@ public:
             nextSampleValue = m_waveTable[0];
         }
         
-        double interpolatedValue = (fraction * previousSampleValue) +
-            ((1-fraction) * nextSampleValue);
+//        double interpolatedValue = (fraction * previousSampleValue) +
+//            ((1-fraction) * nextSampleValue);
+        
+//        double interpolatedValue = previousSampleValue +
+//        (fraction * nextSampleValue);
+        
+        double interpolatedValue = ((1 - fraction) * previousSampleValue) +
+        (fraction * nextSampleValue);
         
         return interpolatedValue;
     }

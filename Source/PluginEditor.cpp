@@ -97,6 +97,9 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_nUnitsSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     m_nUnitsSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
     m_nUnitsSlider->addListener (this);
+    
+    //addAndMakeVisible (m_presetButton = new TextButton ("PRESET"));
+    //m_presetButton->addListener (this);
 
     //cachedImage_screenShot20151119At18_08_57_png_1 = ImageCache::getFromMemory (screenShot20151119At18_08_57_png, screenShot20151119At18_08_57_pngSize);
 
@@ -221,6 +224,8 @@ void ApdelayAudioProcessorEditor::resized()
     m_rightFeedbackSlider->setBounds (24, 240, 312, 45);
     m_dryWetSlider->setBounds (24 + (312 - 90) / 2, 320, 90, 90);
     m_nUnitsSlider->setBounds (342 / 6, 320 -16, 24, 106);
+    //m_presetButton->setBounds((342 / 6)*4, 320 + 20, 90, 40);
+    
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }

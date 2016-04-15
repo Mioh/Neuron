@@ -37,23 +37,22 @@ public:
     }
     
     double process(double delayMS) {
-//        double minDelay = 5.0;
-//        double maxDelay = 30.0;
-//        double start = minDelay + delayMS;
-//        double depth = 0.5;
-//        
-//        double phase = OcillatorUnit::getValue();
-//        OcillatorUnit::tick();
-//        if (phase < 0 || phase > 1) {
-//            int x = 1;
-//        }
+        double minDelay = 5.0;
+        double maxDelay = 30.0;
+        double start = minDelay + delayMS;
+        double depth = 0.5;
         
-        float sinePos = sin((double_Pi * 2.0 * m_sinePhase * 0.1) / 44100.0);
+        double phase = OcillatorUnit::getValue();
+        OcillatorUnit::tick();
+        if (phase < 0 || phase > 1) {
+            int x = 1;
+        }
         
-        //delayMS = (phase * 20.0) + delayMS;
-        delayMS += sinePos * 10.0 + 20.0;
-        m_sinePhase++;
-        //double delay = depth * (phase * (maxDelay - minDelay)) + start;
+        delayMS = depth * (phase * (maxDelay - minDelay)) + start;
+        
+//        float sinePos = sin((double_Pi * 2.0 * m_sinePhase * 0.1) / 44100.0);
+//        delayMS += sinePos * 1.0 + 2.0;
+//        m_sinePhase++;
         
         return DelayUnit::delay2(delayMS * m_samplerateMS);
     }
