@@ -263,12 +263,19 @@ float processSignal(int numberOfDelays, float wet, float input,
     
     for (int i = 0 ; i < numberOfDelays; i++) {
         // Calculate wet signal
-        output += delayUnit[i]->process(delayMS);
+        // Allow users to change number of active delay units mid play
+        // by writing to all delay units using a temporary output
+        float preOutput = delayUnit[i]->process(delayMS);
         //output += delayUnit[i]->delay(delayMS * samplerateMS);
         
         // Write signal + feedback to delay buffer
         // Multiply by volume ratio as the feedback will be summed up by the next sample?
-        delayUnit[i]->write(input + (feedback * output));
+        delayUnit[i]->write(input + (feedback * preOutput));
+        
+        // Only output delay from active units
+        if (i < numberOfDelays) {
+            output += preOutput;
+        }
     }
     // Normalize wet signal
     output = wet * output * volumeRatio;
