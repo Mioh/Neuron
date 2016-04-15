@@ -87,7 +87,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_dryWetSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
     m_dryWetSlider->addListener (this);
     
-    addAndMakeVisible (m_nUnitsSlider = new Slider ("nUnits"));
+    addAndMakeVisible (m_nUnitsSlider = new Slider ("Number of Units"));
     m_nUnitsSlider->setRange (1, 16, 1);
     m_nUnitsSlider->setSliderStyle (Slider::LinearVertical);
     m_nUnitsSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
@@ -115,6 +115,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     float leftFeedBack = processor.getParameter(ApdelayAudioProcessor::Parameters::LeftFeedback);
     float rightFeedback = processor.getParameter(ApdelayAudioProcessor::Parameters::RightFeedback);
     float dryWet = processor.getParameter(ApdelayAudioProcessor::Parameters::DryWet);
+    float numberOfUnits = processor.getParameter(ApdelayAudioProcessor::Parameters::nUnits);
 
 
     m_leftDelaySlider->setValue(leftDelay);
@@ -122,6 +123,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_leftFeedbackSlider->setValue(leftFeedBack);
     m_rightFeedbackSlider->setValue(rightFeedback);
     m_dryWetSlider->setValue(dryWet);
+    m_nUnitsSlider->setValue(numberOfUnits);
 
 
     LookAndFeel::setDefaultLookAndFeel(&m_look);
@@ -256,6 +258,12 @@ void ApdelayAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMoved
     {
         //[UserSliderCode_m_dryWetSlider] -- add your slider handling code here..
                processor.setParameter( ApdelayAudioProcessor::Parameters::DryWet , sliderThatWasMoved->getValue());
+        //[/UserSliderCode_m_dryWetSlider]
+    }
+    else if (sliderThatWasMoved == m_nUnitsSlider)
+    {
+        //[UserSliderCode_m_dryWetSlider] -- add your slider handling code here..
+        processor.setParameter( ApdelayAudioProcessor::Parameters::nUnits , sliderThatWasMoved->getValue());
         //[/UserSliderCode_m_dryWetSlider]
     }
 

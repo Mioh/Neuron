@@ -55,7 +55,7 @@ public:
         m_sinePhase++;
         //double delay = depth * (phase * (maxDelay - minDelay)) + start;
         
-        return DelayUnit::delay2(20.0 * m_samplerateMS);
+        return DelayUnit::delay2(delayMS * m_samplerateMS);
     }
 };
 

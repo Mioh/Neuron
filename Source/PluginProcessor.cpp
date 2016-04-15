@@ -15,19 +15,29 @@
 //==============================================================================
 ApdelayAudioProcessor::ApdelayAudioProcessor():
     m_numberOfDelays(1),
-    m_LeftDelayMS(20),
-    m_rightDelayMS(20),
-    m_leftFeedback(0.0),
-    m_rightFeedback(0.0),
-    m_samplerate(44100),
-    m_wet(0.5)
+    m_MaxNumberOfDelays(16),
+    m_LeftDelayMS(20.0f),
+    m_rightDelayMS(20.0f),
+    m_leftFeedback(0.0f),
+    m_rightFeedback(0.0f),
+    m_samplerate(44100.0f),
+    m_wet(0.5f)
 {
-
-    for (int i = 0; i < m_numberOfDelays ; i++) {
-        m_leftDelay.add(new ModulatedDelayUnit());
-        m_rightDelay.add(new ModulatedDelayUnit());
-    }
     
+    float lfoFrequency = 0.1f;
+    float diff = 0.2f;
+    
+    for (int i = 0; i < m_MaxNumberOfDelays ; i++) {
+        
+        m_leftDelay.add(new ModulatedDelayUnit(m_samplerate,
+                                               lfoFrequency + diff * (float) i,
+                                               OcillatorUnit::SINE,
+                                               m_samplerate));
+        
+        m_rightDelay.add(new ModulatedDelayUnit(m_samplerate,
+                                               lfoFrequency + diff * (float) i,
+                                               OcillatorUnit::SINE,
+                                               m_samplerate));    }
 }
 
 ApdelayAudioProcessor::~ApdelayAudioProcessor()
@@ -60,7 +70,9 @@ float ApdelayAudioProcessor::getParameter (int index)
         case RightFeedback :
             return m_rightFeedback;
         case DryWet :
-            return m_wet;
+            return m_wet * 100;
+        case nUnits:
+            return m_numberOfDelays;
         default:
             break;
     }
@@ -93,6 +105,8 @@ void ApdelayAudioProcessor::setParameter (int index, float value)
         case DryWet :
             m_wet = value / 100.0;
             break;
+        case nUnits :
+            m_numberOfDelays = value;
         default:
             break;
     }
@@ -111,7 +125,9 @@ const String ApdelayAudioProcessor::getParameterName (int index)
         case RightFeedback :
             return "Right Feedback";
         case DryWet :
-            return "Dry/Wet Ratio";
+            return "Dry/Wet";
+        case nUnits :
+            return "Number of Units";
         default:
             break;
     }
@@ -130,7 +146,9 @@ const String ApdelayAudioProcessor::getParameterText (int index)
         case RightFeedback :
             return "Right Feedback";
         case DryWet :
-            return "Dry/Wet Ratio";
+            return "Dry/Wet";
+        case nUnits :
+            return "Number of Units";
         default:
             break;
     }
@@ -216,7 +234,7 @@ void ApdelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    for (int i = 0; i < m_numberOfDelays; i++) {
+    for (int i = 0; i < m_MaxNumberOfDelays; i++) {
         m_rightDelay[i]->clear();
         m_leftDelay[i]->clear();
     }
@@ -230,7 +248,7 @@ void ApdelayAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
-    for (int i = 0; i < m_numberOfDelays; i++) {
+    for (int i = 0; i < m_MaxNumberOfDelays; i++) {
         m_leftDelay[i]->clear();
         m_rightDelay[i]->clear();
     }
@@ -247,7 +265,9 @@ float processSignal(int numberOfDelays, float wet, float input,
         // Calculate wet signal
         output += delayUnit[i]->process(delayMS);
         //output += delayUnit[i]->delay(delayMS * samplerateMS);
+        
         // Write signal + feedback to delay buffer
+        // Multiply by volume ratio as the feedback will be summed up by the next sample?
         delayUnit[i]->write(input + (feedback * output));
     }
     // Normalize wet signal
