@@ -52,7 +52,8 @@ public:
 		
 		++m_writePos;
 		
-		while(m_writePos > m_maxDelay){
+        //Change to while if extreme delays are allowed
+		if (m_writePos >= m_maxDelay) {
 			m_writePos -= m_maxDelay;
 		}
 	
@@ -63,8 +64,9 @@ public:
 		m_delayBuffer[m_writePos] = sample;
 		
 		++m_writePos;
-		
-		while(m_writePos > m_maxDelay){
+        
+		//Change to while if extreme delays are allowed
+		if (m_writePos >= m_maxDelay) {
 			m_writePos -= m_maxDelay;
 		}
 	}
@@ -90,13 +92,13 @@ public:
         double pos = m_writePos - time;
         
         //Make shure the delay does not overshoot the buffer
-        while (pos < 0 ) {
+        //Change to while if extreme delays are allowed
+        if (pos < 0 ) {
             pos += m_maxDelay;
-        }
-        
-        while (pos > m_maxDelay) {
+        } else if (pos > m_maxDelay) {
             pos -= m_maxDelay;
         }
+        
         
         //Interpolate the signal as the delay could try to access a value
         //inbetween what is stored in the buffer
@@ -106,7 +108,7 @@ public:
         
         previousSampleValue = m_delayBuffer[index];
         
-        if (index != (m_maxDelay-1)) {
+        if (index != m_maxDelay-1) {
             nextSampleValue = m_delayBuffer[index+1];
         } else {
             nextSampleValue = m_delayBuffer[0];
@@ -115,11 +117,9 @@ public:
         double interpolatedValue = ((1 - fraction) * previousSampleValue) +
         (fraction * nextSampleValue);
         
-//        double interpolatedValue = (fraction * previousSampleValue) +
-//        ((1-fraction) * nextSampleValue);
-        
-//        double interpolatedValue = previousSampleValue +
-//        (fraction * nextSampleValue);
+        //        double interpolatedValue = previousSampleValue +
+        //        fraction * (previousSampleValue - nextSampleValue);
+
         
         return interpolatedValue;
 	}
