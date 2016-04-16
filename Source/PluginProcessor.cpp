@@ -15,8 +15,8 @@
 //==============================================================================
 ApdelayAudioProcessor::ApdelayAudioProcessor():
     m_numberOfDelays(1),
-    m_MaxNumberOfDelays(16),
-    m_LeftDelayMS(20.0f),
+    m_maxNumberOfDelays(16),
+    m_leftDelayMS(20.0f),
     m_rightDelayMS(20.0f),
     m_leftFeedback(0.0f),
     m_rightFeedback(0.0f),
@@ -27,7 +27,7 @@ ApdelayAudioProcessor::ApdelayAudioProcessor():
     float lfoFrequency = 0.1f;
     float diff = 0.2f;
     
-    for (int i = 0; i < m_MaxNumberOfDelays ; i++) {
+    for (int i = 0; i < m_maxNumberOfDelays ; i++) {
         
         m_leftDelay.add(new ModulatedDelayUnit(m_samplerate,
                                                lfoFrequency + diff * (float) i,
@@ -62,7 +62,7 @@ float ApdelayAudioProcessor::getParameter (int index)
 {
     switch (index) {
         case LeftDelayTimeMS :
-            return m_LeftDelayMS;
+            return m_leftDelayMS;
         case RightDelayTimeMS :
             return m_rightDelayMS;
         case LeftFeedback :
@@ -87,7 +87,7 @@ void ApdelayAudioProcessor::setParameter (int index, float value)
     
     switch (index) {
         case LeftDelayTimeMS :
-            m_LeftDelayMS = value;
+            m_leftDelayMS = value;
             break;
         case RightDelayTimeMS :
             m_rightDelayMS = value;
@@ -234,7 +234,7 @@ void ApdelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    for (int i = 0; i < m_MaxNumberOfDelays; i++) {
+    for (int i = 0; i < m_maxNumberOfDelays; i++) {
         m_rightDelay[i]->clear();
         m_leftDelay[i]->clear();
     }
@@ -248,7 +248,7 @@ void ApdelayAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
-    for (int i = 0; i < m_MaxNumberOfDelays; i++) {
+    for (int i = 0; i < m_maxNumberOfDelays; i++) {
         m_leftDelay[i]->clear();
         m_rightDelay[i]->clear();
     }
@@ -307,7 +307,7 @@ void ApdelayAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
         // Better spacial locality is achived by having seperate loops for
         // left and right channel
         leftChannel[n] = processSignal(m_numberOfDelays, m_wet, leftChannel[n],
-                                       m_leftDelay, m_LeftDelayMS, samplerateMS,
+                                       m_leftDelay, m_leftDelayMS, samplerateMS,
                                        m_leftFeedback);
         
         rightChannel[n] = processSignal(m_numberOfDelays, m_wet,
@@ -334,12 +334,71 @@ void ApdelayAudioProcessor::getStateInformation (MemoryBlock& destData)
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    XmlElement root("Root");
+    XmlElement *el;
+    
+    el = root.createNewChildElement("LeftDelayTimeMS");
+    el->addTextElement(String(m_leftDelayMS));
+    el = root.createNewChildElement("RightDelayTimeMS");
+    el->addTextElement(String(m_rightDelayMS));
+    el = root.createNewChildElement("LeftFeedback");
+    el->addTextElement(String(m_leftFeedback));
+    el = root.createNewChildElement("RightFeedback");
+    el->addTextElement(String(m_rightFeedback));
+    el = root.createNewChildElement("DryWet");
+    el->addTextElement(String(m_wet * 100));
+    el = root.createNewChildElement("nUnits");
+    el->addTextElement(String(m_numberOfDelays));
+    
+    copyXmlToBinary(root,destData);
 }
 
 void ApdelayAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    
+    XmlElement* pRoot = getXmlFromBinary(data,sizeInBytes);
+    
+    if(pRoot!=NULL)
+        
+    {
+        String text;
+        forEachXmlChildElement((*pRoot),pChild)
+        
+        {
+            if (pChild->hasTagName("LeftDelayMS")) {
+                 text = pChild->getAllSubText();
+                setParameter(LeftDelayTimeMS, text.getFloatValue());
+            }
+            else if (pChild->hasTagName("RightDelayMS")) {
+                text = pChild->getAllSubText();
+                setParameter(RightDelayTimeMS, text.getFloatValue());
+            }
+            else if (pChild->hasTagName("LeftFeedback")) {
+                text = pChild->getAllSubText();
+                setParameter(LeftFeedback, text.getFloatValue());
+            }
+            else if (pChild->hasTagName("RightFeedback")) {
+                text = pChild->getAllSubText();
+                setParameter(RightFeedback, text.getFloatValue());
+            }
+            else if (pChild->hasTagName("DryWet")) {
+                text = pChild->getAllSubText();
+                setParameter(DryWet, text.getFloatValue());
+            }
+            else if (pChild->hasTagName("nUnits")) {
+                text = pChild->getAllSubText();
+                setParameter(nUnits, text.getIntValue());
+            }
+            
+        }
+        
+        delete pRoot;
+        
+        //UIUpdateFlag=true;//Request UI update
+        
+    }
 }
 
 //==============================================================================

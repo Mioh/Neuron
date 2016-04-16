@@ -21,8 +21,8 @@ typedef OwnedArray<ModulatedDelayUnit> DelayArray;
 class ApdelayAudioProcessor  : public AudioProcessor
 {
     DelayArray m_leftDelay, m_rightDelay;
-    int m_numberOfDelays, m_MaxNumberOfDelays;
-    float m_LeftDelayMS,m_rightDelayMS, m_leftFeedback,m_rightFeedback,
+    int m_numberOfDelays, m_maxNumberOfDelays;
+    float m_leftDelayMS,m_rightDelayMS, m_leftFeedback,m_rightFeedback,
     m_samplerate, m_wet;
 public:
     
