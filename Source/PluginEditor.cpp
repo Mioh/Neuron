@@ -38,7 +38,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_leftDelaySlider->setRange (1, 100, 1);
     m_leftDelaySlider->setTextValueSuffix (" ms");
     m_leftDelaySlider->setSliderStyle (Slider::LinearHorizontal);
-    m_leftDelaySlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
+    m_leftDelaySlider->setTextBoxStyle (Slider::TextBoxBelow, false, 50, 20);
     m_leftDelaySlider->setColour (Slider::textBoxTextColourId, Colours::black);
     m_leftDelaySlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     m_leftDelaySlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
@@ -48,7 +48,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_rightDelaySlider->setRange (1, 100, 1);
     m_rightDelaySlider->setTextValueSuffix (" ms");
     m_rightDelaySlider->setSliderStyle (Slider::LinearHorizontal);
-    m_rightDelaySlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
+    m_rightDelaySlider->setTextBoxStyle (Slider::TextBoxBelow, false, 50, 20);
     m_rightDelaySlider->setColour (Slider::textBoxTextColourId, Colours::black);
     m_rightDelaySlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     m_rightDelaySlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
@@ -59,7 +59,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_leftFeedbackSlider->setTextValueSuffix (" %");
     m_leftFeedbackSlider->setSliderStyle (Slider::LinearHorizontal);
     m_leftFeedbackSlider->setColour(Slider::backgroundColourId, Colours::black);
-    m_leftFeedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
+    m_leftFeedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 50, 20);
     m_leftFeedbackSlider->setColour (Slider::textBoxTextColourId, Colours::black);
     m_leftFeedbackSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     m_leftFeedbackSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
@@ -69,7 +69,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_rightFeedbackSlider->setRange (0, 100, 1);
     m_rightFeedbackSlider->setTextValueSuffix (" %");
     m_rightFeedbackSlider->setSliderStyle (Slider::LinearHorizontal);
-    m_rightFeedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
+    m_rightFeedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 50, 20);
     m_rightFeedbackSlider->setColour (Slider::textBoxTextColourId, Colours::black);
     m_rightFeedbackSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     m_rightFeedbackSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
@@ -79,7 +79,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_dryWetSlider->setRange (0, 100, 1);
     m_dryWetSlider->setTextValueSuffix (" %");
     m_dryWetSlider->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
-    m_dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
+    m_dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 50, 20);
     m_dryWetSlider->setColour(Slider::rotarySliderFillColourId, Colours::black);
     m_dryWetSlider->setColour(Slider::rotarySliderOutlineColourId, Colours::transparentWhite);
     m_dryWetSlider->setColour (Slider::textBoxTextColourId, Colours::black);
@@ -90,7 +90,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     addAndMakeVisible (m_nUnitsSlider = new Slider ("Number of Units"));
     m_nUnitsSlider->setRange (1, 16, 1);
     m_nUnitsSlider->setSliderStyle (Slider::LinearVertical);
-    m_nUnitsSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 40, 20);
+    m_nUnitsSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 50, 20);
     m_nUnitsSlider->setColour(Slider::rotarySliderFillColourId, Colours::black);
     m_nUnitsSlider->setColour(Slider::rotarySliderOutlineColourId, Colours::transparentWhite);
     m_nUnitsSlider->setColour (Slider::textBoxTextColourId, Colours::black);
