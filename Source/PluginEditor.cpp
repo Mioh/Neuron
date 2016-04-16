@@ -98,6 +98,30 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_nUnitsSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
     m_nUnitsSlider->addListener (this);
     
+    addAndMakeVisible (m_depthSlider = new Slider ("Depth"));
+    m_depthSlider->setRange (1, 100, 1);
+    m_dryWetSlider->setTextValueSuffix (" %");
+    m_depthSlider->setSliderStyle (Slider::LinearHorizontal);
+    m_depthSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 50, 20);
+    m_depthSlider->setColour(Slider::rotarySliderFillColourId, Colours::black);
+    m_depthSlider->setColour(Slider::rotarySliderOutlineColourId, Colours::transparentWhite);
+    m_depthSlider->setColour (Slider::textBoxTextColourId, Colours::black);
+    m_depthSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    m_depthSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
+    m_depthSlider->addListener (this);
+    
+    addAndMakeVisible (m_speedSlider = new Slider ("Speed"));
+    m_speedSlider->setRange (1, 100, 1);
+    m_dryWetSlider->setTextValueSuffix (" %");
+    m_speedSlider->setSliderStyle (Slider::LinearHorizontal);
+    m_speedSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 50, 20);
+    m_speedSlider->setColour(Slider::rotarySliderFillColourId, Colours::black);
+    m_speedSlider->setColour(Slider::rotarySliderOutlineColourId, Colours::transparentWhite);
+    m_speedSlider->setColour (Slider::textBoxTextColourId, Colours::black);
+    m_speedSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    m_speedSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
+    m_speedSlider->addListener (this);
+    
     //addAndMakeVisible (m_presetButton = new TextButton ("PRESET"));
     //m_presetButton->addListener (this);
 
@@ -108,7 +132,7 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     
     //[/UserPreSize]
 
-    setSize (342, 440);
+    setSize (WIDTH, HEIGHT);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -119,7 +143,8 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     float rightFeedback = processor.getParameter(ApdelayAudioProcessor::Parameters::RightFeedback);
     float dryWet = processor.getParameter(ApdelayAudioProcessor::Parameters::DryWet);
     float numberOfUnits = processor.getParameter(ApdelayAudioProcessor::Parameters::nUnits);
-
+    float depth = processor.getParameter(ApdelayAudioProcessor::Parameters::Depth);
+    float speed = processor.getParameter(ApdelayAudioProcessor::Parameters::Speed);
 
     m_leftDelaySlider->setValue(leftDelay);
     m_rightDelaySlider->setValue(rightDelay);
@@ -127,6 +152,8 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_rightFeedbackSlider->setValue(rightFeedback);
     m_dryWetSlider->setValue(dryWet);
     m_nUnitsSlider->setValue(numberOfUnits);
+    m_depthSlider->setValue(depth);
+    m_speedSlider->setValue(speed);
 
 
     LookAndFeel::setDefaultLookAndFeel(&m_look);
@@ -145,7 +172,9 @@ ApdelayAudioProcessorEditor::~ApdelayAudioProcessorEditor()
     m_leftFeedbackSlider = nullptr;
     m_rightFeedbackSlider = nullptr;
     m_dryWetSlider = nullptr;
-
+    m_nUnitsSlider = nullptr;
+    m_depthSlider = nullptr;
+    m_speedSlider = nullptr;
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -166,48 +195,82 @@ void ApdelayAudioProcessorEditor::paint (Graphics& g)
     g.setOpacity(0.54f);
     g.setFont (Font (14.00f, Font::plain));
     g.drawText (TRANS("LEFT DELAY"),
-                28, 36, 200, 30,
+                WINDOW_MARGIN,
+                WINDOW_MARGIN + BAR_TEXT_MARGIN,
+                TEXT_WIDTH,
+                TEXT_HEIGHT,
                 Justification::centredLeft, true);
 
     g.setColour (Colours::black);
     g.setOpacity(0.54f);
     g.setFont (Font (14.00f, Font::plain));
     g.drawText (TRANS("RIGHT DELAY"),
-                28, 108, 200, 30,
+                WINDOW_MARGIN,
+                WINDOW_MARGIN + BAR_TEXT_MARGIN + BAR_WIDTH  + MARGIN,
+                TEXT_WIDTH,
+                TEXT_HEIGHT,
                 Justification::centredLeft, true);
 
     g.setColour (Colours::black);
     g.setOpacity(0.54f);
     g.setFont (Font (14.00f, Font::plain));
     g.drawText (TRANS("LEFT FEEDBACK"),
-                28, 180, 200, 30,
+                WINDOW_MARGIN,
+                WINDOW_MARGIN + BAR_TEXT_MARGIN + 2*BAR_WIDTH  + 2*MARGIN,
+                TEXT_WIDTH,
+                TEXT_HEIGHT,
                 Justification::centredLeft, true);
 
     g.setColour (Colours::black);
     g.setOpacity(0.54f);
     g.setFont (Font (14.00f, Font::plain));
     g.drawText (TRANS("RIGHT FEEDBACK"),
-                28, 260, 200, 30,
+                WINDOW_MARGIN,
+                WINDOW_MARGIN + BAR_TEXT_MARGIN + 3*BAR_WIDTH  + 3*MARGIN,
+                TEXT_WIDTH,
+                TEXT_HEIGHT,
                 Justification::centredLeft, true);
                 
     g.setColour (Colours::black);
     g.setOpacity(0.54f);
     g.setFont (Font (14.00f, Font::plain));
     g.drawText (TRANS("DRY/WET"),
-                24, 392, 312, 30,
+                (WIDTH - TEXT_WIDTH) / 2,
+                WINDOW_MARGIN + TEXT_HEIGHT + 3*BAR_WIDTH  + 4*MARGIN + DIAMETER,
+                TEXT_WIDTH,
+                TEXT_HEIGHT,
                 Justification::centredBottom, true);
     
     g.setColour (Colours::black);
     g.setOpacity(0.54f);
     g.setFont (Font (14.00f, Font::plain));
-    g.drawText (TRANS("UNITS"),
-                342 / 6 - 20, 392, 64, 30,
+    g.drawText (TRANS("VOICES"),
+                WIDTH/6 - TEXT_WIDTH/2 + WINDOW_MARGIN/2,
+                WINDOW_MARGIN + TEXT_HEIGHT + 3*BAR_WIDTH  + 4*MARGIN + DIAMETER,
+                TEXT_WIDTH,
+                TEXT_HEIGHT,
                 Justification::centredBottom, true);
-
+    
     g.setColour (Colours::black);
-//    g.drawImage (cachedImage_screenShot20151119At18_08_57_png_1,
-//                 264, 275, 60, 63,
-//                 0, 0, cachedImage_screenShot20151119At18_08_57_png_1.getWidth(), cachedImage_screenShot20151119At18_08_57_png_1.getHeight());
+    g.setOpacity(0.54f);
+    g.setFont (Font (14.00f, Font::plain));
+    g.drawText (TRANS("DEPTH"),
+                WIDTH/2 - TEXT_WIDTH/2 + DIAMETER/2 + MARGIN + 20,
+                WINDOW_MARGIN + 20 + 4*BAR_WIDTH + 4*MARGIN - 8,
+                TEXT_WIDTH,
+                TEXT_HEIGHT,
+                Justification::centredBottom, true);
+    
+    g.setColour (Colours::black);
+    g.setOpacity(0.54f);
+    g.setFont (Font (14.00f, Font::plain));
+    g.drawText (TRANS("SPEED"),
+                WIDTH/2 - TEXT_WIDTH/2 + DIAMETER/2 + MARGIN + 20,
+                WINDOW_MARGIN + TEXT_HEIGHT + 3*BAR_WIDTH  + 4*MARGIN + DIAMETER,
+                TEXT_WIDTH,
+                TEXT_HEIGHT,
+                Justification::centredBottom, true);
+  
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -218,13 +281,46 @@ void ApdelayAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    m_leftDelaySlider->setBounds (24, 16, 312, 45);
-    m_rightDelaySlider->setBounds (24, 88, 312, 45);
-    m_leftFeedbackSlider->setBounds (24, 160, 312, 45);
-    m_rightFeedbackSlider->setBounds (24, 240, 312, 45);
-    m_dryWetSlider->setBounds (24 + (312 - 90) / 2, 320, 90, 90);
-    m_nUnitsSlider->setBounds (342 / 6, 320 -16, 24, 106);
-    //m_presetButton->setBounds((342 / 6)*4, 320 + 20, 90, 40);
+    m_leftDelaySlider->setBounds    (WINDOW_MARGIN,
+                                     WINDOW_MARGIN,
+                                     WIDTH - WINDOW_MARGIN,
+                                     BAR_WIDTH);
+    
+    m_rightDelaySlider->setBounds   (WINDOW_MARGIN,
+                                     WINDOW_MARGIN + BAR_WIDTH + MARGIN,
+                                     WIDTH - WINDOW_MARGIN,
+                                     BAR_WIDTH);
+    
+    m_leftFeedbackSlider->setBounds (WINDOW_MARGIN,
+                                     WINDOW_MARGIN + 2*BAR_WIDTH + 2*MARGIN,
+                                     WIDTH - WINDOW_MARGIN,
+                                     BAR_WIDTH);
+    
+    m_rightFeedbackSlider->setBounds (WINDOW_MARGIN,
+                                      WINDOW_MARGIN + 3*BAR_WIDTH + 3*MARGIN,
+                                      WIDTH - WINDOW_MARGIN,
+                                      BAR_WIDTH);
+    
+    m_dryWetSlider->setBounds        ((WIDTH - DIAMETER) / 2,
+                                      WINDOW_MARGIN + 4*BAR_WIDTH + 4*MARGIN,
+                                      DIAMETER,
+                                      DIAMETER);
+    
+    m_nUnitsSlider->setBounds        (WIDTH / 6,
+                                      WINDOW_MARGIN + 4*BAR_WIDTH + 4*MARGIN -15,
+                                      BAR_WIDTH * 0.5,
+                                      DIAMETER + 15);
+    
+    m_depthSlider->setBounds (WIDTH/2 + DIAMETER/2 + MARGIN,
+                              WINDOW_MARGIN + 4*BAR_WIDTH + 4*MARGIN,
+                              WIDTH - (WIDTH/2.0 + DIAMETER/2) - WINDOW_MARGIN,
+                              BAR_WIDTH);
+    
+    
+    m_speedSlider->setBounds (WIDTH/2 + DIAMETER/2 + MARGIN,
+                              WINDOW_MARGIN + 4*BAR_WIDTH + 4*MARGIN + 62,
+                              WIDTH - (WIDTH/2.0 + DIAMETER/2) - WINDOW_MARGIN,
+                              BAR_WIDTH);
     
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -267,9 +363,22 @@ void ApdelayAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMoved
     }
     else if (sliderThatWasMoved == m_nUnitsSlider)
     {
-        //[UserSliderCode_m_dryWetSlider] -- add your slider handling code here..
+        //[UserSliderCode_m_nUnitsSlider] -- add your slider handling code here..
         processor.setParameter( ApdelayAudioProcessor::Parameters::nUnits , sliderThatWasMoved->getValue());
-        //[/UserSliderCode_m_dryWetSlider]
+        //[/UserSliderCode_m_nUnitsSlider]
+    }
+    else if (sliderThatWasMoved == m_depthSlider)
+    {
+        //[UserSliderCode_m_depthSlider] -- add your slider handling code here..
+        processor.setParameter( ApdelayAudioProcessor::Parameters::Depth , sliderThatWasMoved->getValue());
+        //[/UserSliderCode_m_depthSlider]
+    }
+    
+    else if (sliderThatWasMoved == m_speedSlider)
+    {
+        //[UserSliderCode_m_speedSlider] -- add your slider handling code here..
+        processor.setParameter( ApdelayAudioProcessor::Parameters::Speed , sliderThatWasMoved->getValue());
+        //[/UserSliderCode_m_speedSlider]
     }
 
     //[UsersliderValueChanged_Post]

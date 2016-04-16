@@ -57,13 +57,13 @@ public:
         
         previousSampleValue = m_waveTable[index];
         
-        if (index < (m_waveTableSize -1)) {
+        if (index < (m_waveTableSize - 1)) {
             nextSampleValue = m_waveTable[index + 1];
         } else {
             nextSampleValue = m_waveTable[0];
         }
         
-        double interpolatedValue = ((1 - fraction) * previousSampleValue) +
+        double interpolatedValue = ((1.0f - fraction) * previousSampleValue) +
         (fraction * nextSampleValue);
         
         return interpolatedValue;
@@ -76,7 +76,7 @@ public:
     void tick() override {
         Phasor::tick();
         //scale the phase to fit the size of the wavetable
-        m_doubleIndex = (Phasor::getPhase() * (m_waveTableSize-1));
+        m_doubleIndex = (Phasor::getPhase() * (m_waveTableSize - 1));
     }
     
     ~OcillatorUnit() {

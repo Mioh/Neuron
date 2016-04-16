@@ -46,33 +46,20 @@ public:
 		}
 	}
 	
-//	void sum(float sample){
-//		
-//		m_delayBuffer[m_writePos] += sample;
-//		
-//		++m_writePos;
-//		
-//        //Change to while if extreme delays are allowed
-//		if (m_writePos >= m_maxDelay) {
-//			m_writePos -= m_maxDelay;
-//		}
-//        
-//        if (m_writePos >= m_maxDelay || m_writePos < 0){
-//            int x = 0;
-//            //std::cout << "im not supppose to be here" << std::endl;
-//        }
-//	
-//	}
+	void sum(float sample){
+		m_delayBuffer[m_writePos] += sample;
+	}
     
 	void write(float sample){
-		
 		m_delayBuffer[m_writePos] = sample;
-		
-		m_writePos++;
+	}
+    
+    void tick() {
+        m_writePos++;
         
         if (m_writePos == m_maxDelay)
             m_writePos = 0;
-	}
+    }
 	
 	float delay(int time){
 		
@@ -93,36 +80,32 @@ public:
     float delay2(double time){
         float pos, previousSampleValue, nextSampleValue, fraction;
         
+        pos = m_writePos - time;
+        
         //Make shure the delay does not overshoot the buffer
         //Change to while if extreme delays are allowed
-//        if (pos < 0 ) {
-//            pos += m_maxDelay;
-//        } else if (pos >= m_maxDelay) {
-//            pos -= m_maxDelay;
-//        }
-        
-         pos = m_writePos - time;
-        
-        while (pos < 0.0f) {
+        //If statements are a little bit cheaper in terms of instructions
+        if (pos < 0 ) {
             pos += m_maxDelay;
-        }
-        
-        while (pos >= m_maxDelay) {
+        } else if (pos >= m_maxDelay) {
             pos -= m_maxDelay;
         }
+        
+//        while (pos < 0.0f) {
+//            pos += m_maxDelay;
+//        }
+//        
+//        while (pos >= m_maxDelay) {
+//            pos -= m_maxDelay;
+//        }
         
         //Interpolate the signal as the delay could try to access a value
         //inbetween what is stored in the buffer
         int index = (int) pos;
         fraction = pos - index;
         
-        if (index > 0) {
-            index -= 1;
-        } else {
-            index = m_maxDelay-1;
-        }
-        
         if (index >= m_maxDelay-1 || index <= 0){
+            //debug
             int x = 0;
         }
         

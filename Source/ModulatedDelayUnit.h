@@ -19,24 +19,40 @@ private:
     float m_samplerateMS;
     float m_depth;
     float m_sinePhase;
+    float m_speed;
     
 public:
+    
     ModulatedDelayUnit(float samplerate, float frequency, OcillatorUnit::Wave waveType, int delaySize, float depth):
         OcillatorUnit(samplerate, frequency, waveType),
         DelayUnit(delaySize),
         m_samplerateMS(samplerate * 0.001f),
-        m_depth(depth),
         m_sinePhase(0)
     {
+        setDepth(depth);
+        setFrequency(frequency);
     }
     
     ModulatedDelayUnit():
     OcillatorUnit(44100.0, 0.1, OcillatorUnit::SINE),
     DelayUnit(44100.0),
     m_samplerateMS(44100.0 * 0.001f),
-    m_depth(0.1),
     m_sinePhase(0)
     {
+        setDepth(0.1f);
+    }
+    
+    static float frequencyFromSpeed(float speed) {
+        float max = 5.0;
+        float min = 0.1;
+        
+        return (speed * (max - min)) + min;
+    }
+    
+    void setDepth (float fraction) {
+        float max = 0.1f;
+        float min = 0.01f;
+        m_depth = (fraction * (max - min)) + min;
     }
     
     float process(float delayMS) {
@@ -46,9 +62,11 @@ public:
         
         double phase = OcillatorUnit::getValue();
         OcillatorUnit::tick();
-        if (phase < 0 || phase > 1) {
-            int x = 1;
-        }
+        
+//        if (phase < 0 || phase > 1) {
+//            //debug
+//            int x = 1;
+//        }
         
         delayMS = m_depth * (phase * (maxDelay - minDelay)) + start;
         

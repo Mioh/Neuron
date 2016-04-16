@@ -64,12 +64,25 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    int WIDTH = 342;
+    int HEIGHT = 410;
+    int WINDOW_MARGIN = 24;
+    
+    int TEXT_HEIGHT = 30;
+    int TEXT_WIDTH = 150;
+    int BAR_WIDTH = 45;
+    int MARGIN = 20;
+    int DIAMETER = 90;
+    int BAR_TEXT_MARGIN = 21;
+    
     ScopedPointer<Slider> m_leftDelaySlider;
     ScopedPointer<Slider> m_rightDelaySlider;
     ScopedPointer<Slider> m_leftFeedbackSlider;
     ScopedPointer<Slider> m_rightFeedbackSlider;
     ScopedPointer<Slider> m_dryWetSlider;
     ScopedPointer<Slider> m_nUnitsSlider;
+    ScopedPointer<Slider> m_depthSlider;
+    ScopedPointer<Slider> m_speedSlider;
     ScopedPointer<TextButton> m_presetButton;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ApdelayAudioProcessorEditor)

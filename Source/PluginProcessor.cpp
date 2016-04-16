@@ -22,22 +22,21 @@ ApdelayAudioProcessor::ApdelayAudioProcessor():
     m_rightFeedback(0.0f),
     m_samplerate(44100.0f),
     m_wet(0.5f),
-    m_depth(0.1f)
+    m_depth(0.2f),
+    m_speed(0.2f),
+    m_frequencyDiff(0.5f)
 {
-    
-    float lfoFrequency = 2.0f;
-    float diff = 0.5f;
     
     for (int i = 0; i < m_maxNumberOfDelays ; i++) {
         
         m_leftDelay.add(new ModulatedDelayUnit(m_samplerate,
-                                               lfoFrequency + diff * (float) i,
+                                               ModulatedDelayUnit::frequencyFromSpeed(m_speed) + (m_frequencyDiff * i),
                                                OcillatorUnit::SINE,
                                                m_samplerate,
                                                m_depth));
         
         m_rightDelay.add(new ModulatedDelayUnit(m_samplerate,
-                                                lfoFrequency + diff * (float) i,
+                                                ModulatedDelayUnit::frequencyFromSpeed(m_speed) + (m_frequencyDiff * i),
                                                 OcillatorUnit::SINE,
                                                 m_samplerate,
                                                 m_depth));
@@ -77,12 +76,14 @@ float ApdelayAudioProcessor::getParameter (int index)
             return m_wet * 100;
         case nUnits:
             return m_numberOfDelays;
+        case Depth:
+            return m_depth * 100;
+        case Speed:
+            return m_speed * 100;
         default:
             break;
     }
-    
-    
-    
+
     return 0.0f;
 }
 
@@ -111,6 +112,25 @@ void ApdelayAudioProcessor::setParameter (int index, float value)
             break;
         case nUnits :
             m_numberOfDelays = value;
+            break;
+        case Depth :
+            m_depth = value / 100;
+            for (int i = 0; i < m_maxNumberOfDelays; i++) {
+                m_leftDelay[i]->setDepth(m_depth);
+                m_rightDelay[i]->setDepth(m_depth);
+            }
+            break;
+        case Speed :
+            m_speed = value / 100;
+            for (int i = 0; i < m_maxNumberOfDelays; i++) {
+                
+                m_leftDelay[i]->setFrequency(ModulatedDelayUnit::frequencyFromSpeed(m_speed) +
+                                             (m_frequencyDiff * i));
+                
+                m_rightDelay[i]->setFrequency(ModulatedDelayUnit::frequencyFromSpeed(m_speed) +
+                                              (m_frequencyDiff * i));
+            }
+            break;
         default:
             break;
     }
@@ -132,6 +152,10 @@ const String ApdelayAudioProcessor::getParameterName (int index)
             return "Dry/Wet";
         case nUnits :
             return "Number of Units";
+        case Depth :
+            return "Depth";
+        case Speed :
+            return "Speed";
         default:
             break;
     }
@@ -153,6 +177,10 @@ const String ApdelayAudioProcessor::getParameterText (int index)
             return "Dry/Wet";
         case nUnits :
             return "Number of Units";
+        case Depth :
+            return "Depth";
+        case Speed :
+            return "Speed";
         default:
             break;
     }
@@ -259,22 +287,27 @@ void ApdelayAudioProcessor::releaseResources()
 }
 
 float processSignal(int numberOfDelays, float wet, float input,
-           DelayArray &delayUnit, float delayMS, float samplerateMS, float feedback)
+           DelayArray &delayUnit, float delayMS, float feedback)
 {
-    float dry = (1.0f - wet);
+    float dry = 1.0f - wet;
     float output = 0.0f;
-    float volumeRatio = 1.0f/((float) numberOfDelays);
+    float volumeRatio = 1.0f / ((float) numberOfDelays);
     
     for (int i = 0 ; i < numberOfDelays; i++) {
+        // Write signal to delay buffer
+        delayUnit[i]->write(input);
+        
         // Calculate wet signal
         // Allow users to change number of active delay units mid play
         // by writing to all delay units using a temporary output
         float preOutput = delayUnit[i]->process(delayMS);
         //output += delayUnit[i]->delay(delayMS * samplerateMS);
         
-        // Write signal + feedback to delay buffer
-        // Multiply by volume ratio as the feedback will be summed up by the next sample?
-        delayUnit[i]->write(input + (feedback * preOutput));
+        // Write feedback to delay buffer
+        delayUnit[i]->sum(feedback * preOutput);
+        
+        // Move write position
+        delayUnit[i]->DelayUnit::tick();
         
         // Only output delay from active units
         if (i < numberOfDelays) {
@@ -304,19 +337,23 @@ void ApdelayAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     float* rightChannel = buffer.getWritePointer(1);
     
     int blockSize = buffer.getNumSamples();
-    float samplerateMS = m_samplerate * 0.001f;
     
     for(int n = 0 ; n < blockSize;++n){
         
         // Better spacial locality is achived by having seperate loops for
         // left and right channel
-        leftChannel[n] = processSignal(m_numberOfDelays, m_wet, leftChannel[n],
-                                       m_leftDelay, m_leftDelayMS, samplerateMS,
+        leftChannel[n] = processSignal(m_numberOfDelays,
+                                       m_wet,
+                                       leftChannel[n],
+                                       m_leftDelay,
+                                       m_leftDelayMS,
                                        m_leftFeedback);
         
-        rightChannel[n] = processSignal(m_numberOfDelays, m_wet,
-                                        rightChannel[n], m_rightDelay,
-                                        m_rightDelayMS, samplerateMS,
+        rightChannel[n] = processSignal(m_numberOfDelays,
+                                        m_wet,
+                                        rightChannel[n],
+                                        m_rightDelay,
+                                        m_rightDelayMS,
                                         m_rightFeedback);
     }
 }
@@ -353,6 +390,10 @@ void ApdelayAudioProcessor::getStateInformation (MemoryBlock& destData)
     el->addTextElement(String(m_wet * 100));
     el = root.createNewChildElement("nUnits");
     el->addTextElement(String(m_numberOfDelays));
+    el = root.createNewChildElement("Depth");
+    el->addTextElement(String(m_depth * 100));
+    el = root.createNewChildElement("Speed");
+    el->addTextElement(String(m_speed * 100));
     
     copyXmlToBinary(root,destData);
 }
@@ -394,6 +435,14 @@ void ApdelayAudioProcessor::setStateInformation (const void* data, int sizeInByt
             else if (pChild->hasTagName("nUnits")) {
                 text = pChild->getAllSubText();
                 setParameter(nUnits, text.getIntValue());
+            }
+            else if (pChild->hasTagName("Depth")) {
+                text = pChild->getAllSubText();
+                setParameter(Depth, text.getFloatValue());
+            }
+            else if (pChild->hasTagName("Speed")) {
+                text = pChild->getAllSubText();
+                setParameter(Speed, text.getFloatValue());
             }
             
         }
