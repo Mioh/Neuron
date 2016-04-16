@@ -21,23 +21,27 @@ ApdelayAudioProcessor::ApdelayAudioProcessor():
     m_leftFeedback(0.0f),
     m_rightFeedback(0.0f),
     m_samplerate(44100.0f),
-    m_wet(0.5f)
+    m_wet(0.5f),
+    m_depth(0.1f)
 {
     
-    float lfoFrequency = 0.1f;
-    float diff = 0.2f;
+    float lfoFrequency = 2.0f;
+    float diff = 0.5f;
     
     for (int i = 0; i < m_maxNumberOfDelays ; i++) {
         
         m_leftDelay.add(new ModulatedDelayUnit(m_samplerate,
                                                lfoFrequency + diff * (float) i,
                                                OcillatorUnit::SINE,
-                                               m_samplerate));
+                                               m_samplerate,
+                                               m_depth));
         
         m_rightDelay.add(new ModulatedDelayUnit(m_samplerate,
-                                               lfoFrequency + diff * (float) i,
-                                               OcillatorUnit::SINE,
-                                               m_samplerate));    }
+                                                lfoFrequency + diff * (float) i,
+                                                OcillatorUnit::SINE,
+                                                m_samplerate,
+                                                m_depth));
+    }
 }
 
 ApdelayAudioProcessor::~ApdelayAudioProcessor()

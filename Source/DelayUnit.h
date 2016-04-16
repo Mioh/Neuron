@@ -46,29 +46,32 @@ public:
 		}
 	}
 	
-	void sum(float sample){
-		
-		m_delayBuffer[m_writePos] += sample;
-		
-		++m_writePos;
-		
-        //Change to while if extreme delays are allowed
-		if (m_writePos >= m_maxDelay) {
-			m_writePos -= m_maxDelay;
-		}
-	
-	}
+//	void sum(float sample){
+//		
+//		m_delayBuffer[m_writePos] += sample;
+//		
+//		++m_writePos;
+//		
+//        //Change to while if extreme delays are allowed
+//		if (m_writePos >= m_maxDelay) {
+//			m_writePos -= m_maxDelay;
+//		}
+//        
+//        if (m_writePos >= m_maxDelay || m_writePos < 0){
+//            int x = 0;
+//            //std::cout << "im not supppose to be here" << std::endl;
+//        }
+//	
+//	}
     
 	void write(float sample){
 		
 		m_delayBuffer[m_writePos] = sample;
 		
-		++m_writePos;
+		m_writePos++;
         
-		//Change to while if extreme delays are allowed
-		if (m_writePos >= m_maxDelay) {
-			m_writePos -= m_maxDelay;
-		}
+        if (m_writePos == m_maxDelay)
+            m_writePos = 0;
 	}
 	
 	float delay(int time){
@@ -88,38 +91,54 @@ public:
     }
     
     float delay2(double time){
-        
-        double pos = m_writePos - time;
+        float pos, previousSampleValue, nextSampleValue, fraction;
         
         //Make shure the delay does not overshoot the buffer
         //Change to while if extreme delays are allowed
-        if (pos < 0 ) {
+//        if (pos < 0 ) {
+//            pos += m_maxDelay;
+//        } else if (pos >= m_maxDelay) {
+//            pos -= m_maxDelay;
+//        }
+        
+         pos = m_writePos - time;
+        
+        while (pos < 0.0f) {
             pos += m_maxDelay;
-        } else if (pos > m_maxDelay) {
+        }
+        
+        while (pos >= m_maxDelay) {
             pos -= m_maxDelay;
         }
         
-        
         //Interpolate the signal as the delay could try to access a value
         //inbetween what is stored in the buffer
-        double previousSampleValue, nextSampleValue, doubleIndex;
-        double fraction = modf(pos, &doubleIndex);
-        int index = (int) doubleIndex;
+        int index = (int) pos;
+        fraction = pos - index;
+        
+        if (index > 0) {
+            index -= 1;
+        } else {
+            index = m_maxDelay-1;
+        }
+        
+        if (index >= m_maxDelay-1 || index <= 0){
+            int x = 0;
+        }
         
         previousSampleValue = m_delayBuffer[index];
         
+        // Get next element in the circular buffer,
+        // If previous element was the last element, get the first element
         if (index != m_maxDelay-1) {
-            nextSampleValue = m_delayBuffer[index+1];
+            nextSampleValue = m_delayBuffer[index + 1];
         } else {
             nextSampleValue = m_delayBuffer[0];
         }
         
-        double interpolatedValue = ((1 - fraction) * previousSampleValue) +
+        // Get interpolated value
+        float interpolatedValue = ((1.0f - fraction) * previousSampleValue) +
         (fraction * nextSampleValue);
-        
-        //        double interpolatedValue = previousSampleValue +
-        //        fraction * (previousSampleValue - nextSampleValue);
-
         
         return interpolatedValue;
 	}

@@ -50,9 +50,10 @@ public:
     }
     
     double getValue() {
-        double previousSampleValue, nextSampleValue, doubleIndex;
-        double fraction = modf(m_doubleIndex, &doubleIndex);
-        int index = (int) doubleIndex;
+        double previousSampleValue, nextSampleValue, fraction;
+        
+        int index = (int) m_doubleIndex;
+        fraction = m_doubleIndex - index;
         
         previousSampleValue = m_waveTable[index];
         
@@ -61,12 +62,6 @@ public:
         } else {
             nextSampleValue = m_waveTable[0];
         }
-        
-//        double interpolatedValue = (fraction * previousSampleValue) +
-//            ((1-fraction) * nextSampleValue);
-        
-//        double interpolatedValue = previousSampleValue +
-//        (fraction * nextSampleValue);
         
         double interpolatedValue = ((1 - fraction) * previousSampleValue) +
         (fraction * nextSampleValue);
