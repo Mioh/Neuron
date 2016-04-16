@@ -18,6 +18,7 @@ class CustomLook : public LookAndFeel_V3{
     Colour blue = Colour(33,150,243);
     Colour pink = Colour(233,30,99);
     Colour green = Colour(0,150,136);
+    Colour purple = Colour(156,39,176);
     
 public:
     void 	drawLinearSlider (Graphics & g, int x, int y, int width, int height,
@@ -28,16 +29,17 @@ public:
                               Slider & slider)
     {
         
+        Colour colour = width > 200 ? blue : purple;
         int corner = 5;
         
         if (sliderStyle == Slider::SliderStyle::LinearHorizontal) {
             
             //Background
-            g.setColour(blue);
+            g.setColour(colour);
             g.setOpacity(0.54f);
             g.fillRoundedRectangle(0, y, width, height * 0.75f, corner);
             //Slider
-            g.setColour(blue);
+            g.setColour(colour);
             g.fillRoundedRectangle(0, y, (int) sliderPos - x, height * 0.75f, corner);
             
         } else {
