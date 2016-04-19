@@ -3,10 +3,10 @@ Neuron is a multi voice delay unit. It is meant to operate as a regular chorus u
 however, parameters provided allows it more extreme behaviour.
 
 INPUT
-Realtime audio (stereo)
+- Realtime audio (stereo)
 
 OUTPUT
-Realtime audio (stereo)
+- Realtime audio (stereo)
 
 PARAMETERS
 - Left Delay: Pre delay time for left channel in milliseconds
