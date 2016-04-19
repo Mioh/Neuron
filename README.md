@@ -25,3 +25,4 @@ FUTURE WORK
 - Neruon aspired to increasingly compress the output signal more and more as the
 chorus mix approaches 100%, this feature was de prioritized however as it turned
 out to be too ambitious to achieve within the given time frame of the project.
+- Stereo spread of voices (panning)
