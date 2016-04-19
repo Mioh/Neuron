@@ -26,7 +26,7 @@ public:
         m_samplerate = samplerate;
         m_frequency = frequency;
         calc_inc();
-        std::cout << "\nIn Phasor, Constructor called" << "Frequency: " << m_frequency;
+        std::cout << "\nPhasor: Constructed with frequency:" << m_frequency;
     }
     
     virtual ~Phasor(){};

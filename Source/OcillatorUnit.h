@@ -19,7 +19,6 @@ public: enum Wave { SINE };
     
 private:
     double *m_waveTable = nullptr;
-    //double m_waveTable[512];
     int m_waveTableSize = 0;
     double m_doubleIndex = 0.0;
     OcillatorUnit::Wave m_type;
@@ -31,38 +30,38 @@ public:
             double tableFraction = ((double) i) / ((double) m_waveTableSize);
             m_waveTable[i] = f(double_Pi * tableFraction);
         }
-        std::cout << "\n ocillator table filled \n";
     }
     
     void setType (OcillatorUnit::Wave type) {
-        //This screws things upp as m_type is initiallized to SINE!!!
-        //if (type != m_type) {
-            m_type = type;
+        m_type = type;
             
-            switch (type) {
-                case SINE:
-                    fillWaveTable(&std::sin);
-                    break;
-                default:
-                    fillWaveTable(&std::sin);
-            }
-        //}
+        switch (type) {
+            case SINE:
+                fillWaveTable(&sin);
+                break;
+            default:
+                fillWaveTable(&sin);
+        }
     }
     
     double getValue() {
         double previousSampleValue, nextSampleValue, fraction;
         
+        //Interpolate the wave as the one could try to access a value
+        //inbetween what is stored in the wavetable
         int index = (int) m_doubleIndex;
         fraction = m_doubleIndex - index;
-        
         previousSampleValue = m_waveTable[index];
         
+        // Get next element in the circular buffer,
+        // If previous element was the last element, get the first element
         if (index < (m_waveTableSize - 1)) {
             nextSampleValue = m_waveTable[index + 1];
         } else {
             nextSampleValue = m_waveTable[0];
         }
         
+        // Get interpolated value
         double interpolatedValue = ((1.0f - fraction) * previousSampleValue) +
         (fraction * nextSampleValue);
         

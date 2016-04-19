@@ -42,39 +42,44 @@ public:
         setDepth(0.1f);
     }
     
+    // The value 'speed' is a value between  0.0f and 1.0f representing a fraction
+    // of the frequency range the unit has to offer.
     static float frequencyFromSpeed(float speed) {
-        float max = 5.0;
-        float min = 0.1;
+        float maxFrequency = 5.0;
+        float minFrequency = 0.1;
         
-        return (speed * (max - min)) + min;
+        return (speed * (maxFrequency - minFrequency)) + maxFrequency;
     }
     
-    void setDepth (float fraction) {
+    // The value 'depth' is a value between 0.0f and 1.0f representing a fraction
+    // of the available depth the unit has to offer.
+    void setDepth (float depth) {
         float max = 0.1f;
         float min = 0.01f;
-        m_depth = (fraction * (max - min)) + min;
+        m_depth = (depth * (max - min)) + min;
     }
     
-    float process(float delayMS) {
-        double minDelay = 7.0;
-        double maxDelay = 30.0;
-        double start = minDelay + delayMS;
+    float chorusDelay (float delayMS) {
+        float minPhaseDelayMS = 7.0f;
+        float maxPhaseDelayMS = 30.0f;
         
-        double phase = OcillatorUnit::getValue();
+        return delay (delayMS, minPhaseDelayMS, maxPhaseDelayMS);
+    }
+    
+    //PRE: minPhaseDelayMS < maxPhaseDelayMS
+    float delay (float delayMS, float minPhaseDelayMS, float maxPhaseDelayMS) {
+        float start = minPhaseDelayMS + delayMS;
+        
+        float phase = OcillatorUnit::getValue();
         OcillatorUnit::tick();
         
-//        if (phase < 0 || phase > 1) {
-//            //debug
-//            int x = 1;
-//        }
+        delayMS = m_depth * (phase * (maxPhaseDelayMS - minPhaseDelayMS)) + start;
         
-        delayMS = m_depth * (phase * (maxDelay - minDelay)) + start;
-        
-//        float sinePos = sin((double_Pi * 2.0 * m_sinePhase * 0.1) / 44100.0);
-//        delayMS *= sinePos;
-//        m_sinePhase++;
-        
-        return DelayUnit::delay2(delayMS * m_samplerateMS);
+        return DelayUnit::delay(delayMS * m_samplerateMS);
+    }
+    
+    void tick() {
+        DelayUnit::tick();
     }
 };
 

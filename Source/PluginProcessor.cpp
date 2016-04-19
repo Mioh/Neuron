@@ -11,7 +11,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-
 //==============================================================================
 ApdelayAudioProcessor::ApdelayAudioProcessor():
     m_numberOfDelays(1),
@@ -45,9 +44,6 @@ ApdelayAudioProcessor::ApdelayAudioProcessor():
 
 ApdelayAudioProcessor::~ApdelayAudioProcessor()
 {
-    //delete[] m_leftDelay;
-    //delete[] m_rightDelay;
-    
 }
 
 //==============================================================================
@@ -69,9 +65,9 @@ float ApdelayAudioProcessor::getParameter (int index)
         case RightDelayTimeMS :
             return m_rightDelayMS;
         case LeftFeedback :
-            return m_leftFeedback;
+            return m_leftFeedback * 100;
         case RightFeedback :
-            return m_rightFeedback;
+            return m_rightFeedback * 100;
         case DryWet :
             return m_wet * 100;
         case nUnits:
@@ -98,32 +94,31 @@ void ApdelayAudioProcessor::setParameter (int index, float value)
             m_rightDelayMS = value;
             break;
         case LeftFeedback :
-            if (value < 0.0) value = 0.0;
-            if (value > 99.0) value = 99.0;
-            m_leftFeedback = value / 100.0;
+            if (value < 0.0f) value = 0.0f;
+            if (value > 99.0f) value = 99.0f;
+            m_leftFeedback = value / 100.0f;
             break;
         case RightFeedback :
-            if (value < 0.0) value = 0.0;
-            if (value > 99.0) value = 99.0;
-            m_rightFeedback = value / 100.0;
+            if (value < 0.0f) value = 0.0f;
+            if (value > 99.0f) value = 99.0f;
+            m_rightFeedback = value / 100.0f;
             break;
         case DryWet :
-            m_wet = value / 100.0;
+            m_wet = value / 100.0f;
             break;
         case nUnits :
             m_numberOfDelays = value;
             break;
         case Depth :
-            m_depth = value / 100;
+            m_depth = value / 100.0f;
             for (int i = 0; i < m_maxNumberOfDelays; i++) {
                 m_leftDelay[i]->setDepth(m_depth);
                 m_rightDelay[i]->setDepth(m_depth);
             }
             break;
         case Speed :
-            m_speed = value / 100;
+            m_speed = value / 100.0f;
             for (int i = 0; i < m_maxNumberOfDelays; i++) {
-                
                 m_leftDelay[i]->setFrequency(ModulatedDelayUnit::frequencyFromSpeed(m_speed) +
                                              (m_frequencyDiff * i));
                 
@@ -266,6 +261,8 @@ void ApdelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    
+    // Clear all delay buffers
     for (int i = 0; i < m_maxNumberOfDelays; i++) {
         m_rightDelay[i]->clear();
         m_leftDelay[i]->clear();
@@ -280,6 +277,8 @@ void ApdelayAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
+    
+    //Clear all delay buffers
     for (int i = 0; i < m_maxNumberOfDelays; i++) {
         m_leftDelay[i]->clear();
         m_rightDelay[i]->clear();
@@ -294,24 +293,23 @@ float processSignal(int numberOfDelays, float wet, float input,
     float volumeRatio = 1.0f / ((float) numberOfDelays);
     
     for (int i = 0 ; i < numberOfDelays; i++) {
-        // Write signal to delay buffer
+        // Write dry signal to delay buffer
         delayUnit[i]->write(input);
         
         // Calculate wet signal
         // Allow users to change number of active delay units mid play
-        // by writing to all delay units using a temporary output
-        float preOutput = delayUnit[i]->process(delayMS);
-        //output += delayUnit[i]->delay(delayMS * samplerateMS);
+        // without popps and clicks by calculating the wet signal for all voices
+        float wetSignal = delayUnit[i]->chorusDelay(delayMS);
         
         // Write feedback to delay buffer
-        delayUnit[i]->sum(feedback * preOutput);
+        delayUnit[i]->sum(feedback * wetSignal);
         
         // Move write position
-        delayUnit[i]->DelayUnit::tick();
+        delayUnit[i]->tick();
         
         // Only output delay from active units
         if (i < numberOfDelays) {
-            output += preOutput;
+            output += wetSignal;
         }
     }
     // Normalize wet signal
@@ -340,8 +338,9 @@ void ApdelayAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     
     for(int n = 0 ; n < blockSize;++n){
         
-        // Better spacial locality is achived by having seperate loops for
-        // left and right channel
+        // Better spatial locality is achived by having seperate loops for
+        // left and right channel, meaning values accessed are more likely to
+        // still riside in memmory as arrays are traversed
         leftChannel[n] = processSignal(m_numberOfDelays,
                                        m_wet,
                                        leftChannel[n],
@@ -383,9 +382,9 @@ void ApdelayAudioProcessor::getStateInformation (MemoryBlock& destData)
     el = root.createNewChildElement("RightDelayTimeMS");
     el->addTextElement(String(m_rightDelayMS));
     el = root.createNewChildElement("LeftFeedback");
-    el->addTextElement(String(m_leftFeedback));
+    el->addTextElement(String(m_leftFeedback * 100));
     el = root.createNewChildElement("RightFeedback");
-    el->addTextElement(String(m_rightFeedback));
+    el->addTextElement(String(m_rightFeedback * 100));
     el = root.createNewChildElement("DryWet");
     el->addTextElement(String(m_wet * 100));
     el = root.createNewChildElement("nUnits");
@@ -412,11 +411,11 @@ void ApdelayAudioProcessor::setStateInformation (const void* data, int sizeInByt
         forEachXmlChildElement((*pRoot),pChild)
         
         {
-            if (pChild->hasTagName("LeftDelayMS")) {
+            if (pChild->hasTagName("LeftDelayTimeMS")) {
                  text = pChild->getAllSubText();
                 setParameter(LeftDelayTimeMS, text.getFloatValue());
             }
-            else if (pChild->hasTagName("RightDelayMS")) {
+            else if (pChild->hasTagName("RightDelayTimeMS")) {
                 text = pChild->getAllSubText();
                 setParameter(RightDelayTimeMS, text.getFloatValue());
             }

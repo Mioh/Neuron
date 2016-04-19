@@ -60,24 +60,8 @@ public:
         if (m_writePos == m_maxDelay)
             m_writePos = 0;
     }
-	
-	float delay(int time){
-		
-		int pos = m_writePos - time;
-		
-		while (pos < 0 ) {
-			pos += m_maxDelay;
-		}
-		
-		while (pos > m_maxDelay) {
-			pos -= m_maxDelay;
-		}
-        
-        return m_delayBuffer[pos];
-        
-    }
     
-    float delay2(double time){
+    float delay(double time){
         float pos, previousSampleValue, nextSampleValue, fraction;
         
         pos = m_writePos - time;
@@ -91,24 +75,10 @@ public:
             pos -= m_maxDelay;
         }
         
-//        while (pos < 0.0f) {
-//            pos += m_maxDelay;
-//        }
-//        
-//        while (pos >= m_maxDelay) {
-//            pos -= m_maxDelay;
-//        }
-        
         //Interpolate the signal as the delay could try to access a value
         //inbetween what is stored in the buffer
         int index = (int) pos;
         fraction = pos - index;
-        
-        if (index >= m_maxDelay-1 || index <= 0){
-            //debug
-            int x = 0;
-        }
-        
         previousSampleValue = m_delayBuffer[index];
         
         // Get next element in the circular buffer,

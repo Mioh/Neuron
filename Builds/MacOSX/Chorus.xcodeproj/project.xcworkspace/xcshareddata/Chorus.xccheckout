@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>7D546F86-B710-4671-BFB6-A29E862CD455</string>
 	<key>IDESourceControlProjectName</key>
-	<string>Chorus</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>235A659C2956E2DBA6978B11C32E6664B6DBF1AE</key>
 		<string>https://github.com/Mioh/audioprogramming.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Builds/MacOSX/Chorus.xcodeproj</string>
+	<string>Builds/MacOSX/Chorus.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>235A659C2956E2DBA6978B11C32E6664B6DBF1AE</key>
