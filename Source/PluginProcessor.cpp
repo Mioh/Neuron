@@ -26,7 +26,7 @@ ApdelayAudioProcessor::ApdelayAudioProcessor():
     m_frequencyDiff(0.5f)
 {
     
-    for (int i = 0; i < m_maxNumberOfDelays ; i++) {
+    for (int i = 0; i < m_maxNumberOfDelays; i++) {
         
         m_leftDelay.add(new ModulatedDelayUnit(m_samplerate,
                                                ModulatedDelayUnit::frequencyFromSpeed(m_speed) + (m_frequencyDiff * i),
@@ -70,11 +70,11 @@ float ApdelayAudioProcessor::getParameter (int index)
             return m_rightFeedback * 100;
         case DryWet :
             return m_wet * 100;
-        case nUnits:
+        case nUnits :
             return m_numberOfDelays;
-        case Depth:
+        case Depth :
             return m_depth * 100;
-        case Speed:
+        case Speed :
             return m_speed * 100;
         default:
             break;
@@ -294,7 +294,7 @@ float processSignal(int numberOfDelays, float wet, float input,
     float output = 0.0f;
     float volumeRatio = 1.0f / ((float) numberOfDelays);
     
-    for (int i = 0 ; i < numberOfDelays; i++) {
+    for (int i = 0; i < numberOfDelays; i++) {
         // Write dry signal to delay buffer
         delayUnit[i]->write(input);
         
