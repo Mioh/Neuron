@@ -21,6 +21,15 @@ PARAMETERS
     Note: Not actual percentage but percentage of available depth.
 - Speed: Percentage of the frequency span available for the ocillator's phase.
 
+PRESETS (For Plug-In Host)
+- Choir: Utilizes all voices with full depth to distinct the voices and a lot of feedback as well as a 1 ms difference between right and left channel to give the signal width and a reverb illusion.
+- Init: The initial settings for Neuron with an apple AUMIDISyth connected.
+- PlainChorus: Standard chorus settings.
+- ReverbLike: Utilizes a lot of feedback with low depth and speed to give a reverb illusion.
+- StereoSpread: Gives the signal a stereo spread.
+- Vibrato: A single voice gives the signal vibrato by having heigh a high depth.
+
+
 FUTURE WORK
 - Neruon aspired to increasingly compress the output signal more and more as the
 chorus mix approaches 100%, this feature was de prioritized however as it turned
