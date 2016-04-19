@@ -18,7 +18,6 @@ class ModulatedDelayUnit : public OcillatorUnit, public DelayUnit {
 private:
     float m_samplerateMS;
     float m_depth;
-    float m_sinePhase;
     float m_speed;
     
 public:
@@ -26,8 +25,7 @@ public:
     ModulatedDelayUnit(float samplerate, float frequency, OcillatorUnit::Wave waveType, int delaySize, float depth):
         OcillatorUnit(samplerate, frequency, waveType),
         DelayUnit(delaySize),
-        m_samplerateMS(samplerate * 0.001f),
-        m_sinePhase(0)
+        m_samplerateMS(samplerate * 0.001f)
     {
         setDepth(depth);
         setFrequency(frequency);
@@ -36,8 +34,7 @@ public:
     ModulatedDelayUnit():
     OcillatorUnit(44100.0, 0.1, OcillatorUnit::SINE),
     DelayUnit(44100.0),
-    m_samplerateMS(44100.0 * 0.001f),
-    m_sinePhase(0)
+    m_samplerateMS(44100.0 * 0.001f)
     {
         setDepth(0.1f);
     }

@@ -338,11 +338,10 @@ void ApdelayAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     
     int blockSize = buffer.getNumSamples();
     
-    for(int n = 0 ; n < blockSize; ++n){
-        
-        // Better spatial locality is achived by having seperate loops for
-        // left and right channel, meaning values accessed are more likely to
-        // still riside in memmory as arrays are traversed
+    // Better spatial locality is achived by having seperate loops for
+    // left and right channel, meaning values accessed are more likely to
+    // still riside in memmory as arrays are traversed
+    for (int n = 0; n < blockSize; ++n) {
         leftChannel[n] = processSignal(m_numberOfDelays,
                                        m_wet,
                                        leftChannel[n],
@@ -350,6 +349,9 @@ void ApdelayAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
                                        m_leftDelayMS,
                                        m_leftFeedback);
         
+    }
+    
+    for (int n = 0; n < blockSize; ++n) {
         rightChannel[n] = processSignal(m_numberOfDelays,
                                         m_wet,
                                         rightChannel[n],

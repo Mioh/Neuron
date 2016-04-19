@@ -47,7 +47,7 @@ public:
     }
     
     void calc_inc() {
-        m_inc = ((float) m_frequency)/ ((float) m_samplerate);
+        m_inc = m_frequency / m_samplerate;
     }
     
     void setFrequency(float frequency) {

@@ -21,7 +21,7 @@ class CustomLook : public LookAndFeel_V3{
     Colour purple = Colour(156,39,176);
     
 public:
-    void 	drawLinearSlider (Graphics & g, int x, int y, int width, int height,
+    void drawLinearSlider (Graphics & g, int x, int y, int width, int height,
                               float sliderPos,
                               float minSliderPos,
                               float maxSliderPos,
