@@ -226,10 +226,10 @@
  #define JucePlugin_Build_AAX              0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "Chorus"
+ #define JucePlugin_Name                   "Neuron"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "Chorus"
+ #define JucePlugin_Desc                   "Chorus unit"
 #endif
 #ifndef  JucePlugin_Manufacturer
  #define JucePlugin_Manufacturer           "Ohlsson"
@@ -301,7 +301,7 @@
  #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
 #endif
 #ifndef  JucePlugin_CFBundleIdentifier
- #define JucePlugin_CFBundleIdentifier     com.yourcompany.chorus
+ #define JucePlugin_CFBundleIdentifier     com.ohlsson.neuron
 #endif
 #ifndef  JucePlugin_RTASCategory
  #define JucePlugin_RTASCategory           ePlugInCategory_None
@@ -319,7 +319,7 @@
  #define JucePlugin_RTASDisableMultiMono   0
 #endif
 #ifndef  JucePlugin_AAXIdentifier
- #define JucePlugin_AAXIdentifier          com.yourcompany.APDelay
+ #define JucePlugin_AAXIdentifier          com.ohlsson.neuron
 #endif
 #ifndef  JucePlugin_AAXManufacturerCode
  #define JucePlugin_AAXManufacturerCode    JucePlugin_ManufacturerCode

@@ -121,11 +121,6 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     m_speedSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     m_speedSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00808080));
     m_speedSlider->addListener (this);
-    
-    //addAndMakeVisible (m_presetButton = new TextButton ("PRESET"));
-    //m_presetButton->addListener (this);
-
-    //cachedImage_screenShot20151119At18_08_57_png_1 = ImageCache::getFromMemory (screenShot20151119At18_08_57_png, screenShot20151119At18_08_57_pngSize);
 
     //[UserPreSize]
     
@@ -133,7 +128,6 @@ ApdelayAudioProcessorEditor::ApdelayAudioProcessorEditor (AudioProcessor& proces
     //[/UserPreSize]
 
     setSize (WIDTH, HEIGHT);
-
 
     //[Constructor] You can add your own custom stuff here..
 
@@ -187,9 +181,6 @@ void ApdelayAudioProcessorEditor::paint (Graphics& g)
     //[/UserPrePaint]
 
     g.fillAll (Colour(224,224,224));
-
-    //g.setColour (Colour (0xff7d7d7d));
-    //g.fillRoundedRectangle (24.0f, 11.0f, 312.0f, 333.0f, 10.000f);
 
     g.setColour (Colours::black);
     g.setOpacity(0.54f);
