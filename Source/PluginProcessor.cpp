@@ -119,11 +119,13 @@ void ApdelayAudioProcessor::setParameter (int index, float value)
         case Speed :
             m_speed = value / 100.0f;
             for (int i = 0; i < m_maxNumberOfDelays; i++) {
-                m_leftDelay[i]->setFrequency(ModulatedDelayUnit::frequencyFromSpeed(m_speed) +
-                                             (m_frequencyDiff * i));
+                // Calculate new frequecy from speed percentage and
+                // make all units have different frequencies
+                float frequency = ModulatedDelayUnit::frequencyFromSpeed(m_speed) +
+                (m_frequencyDiff * i);
                 
-                m_rightDelay[i]->setFrequency(ModulatedDelayUnit::frequencyFromSpeed(m_speed) +
-                                              (m_frequencyDiff * i));
+                m_leftDelay[i]->setFrequency(frequency);
+                m_rightDelay[i]->setFrequency(frequency);
             }
             break;
         default:
@@ -336,7 +338,7 @@ void ApdelayAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     
     int blockSize = buffer.getNumSamples();
     
-    for(int n = 0 ; n < blockSize;++n){
+    for(int n = 0 ; n < blockSize; ++n){
         
         // Better spatial locality is achived by having seperate loops for
         // left and right channel, meaning values accessed are more likely to

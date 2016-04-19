@@ -49,13 +49,6 @@ public:
             //Background
             g.setColour(pink);
             g.setOpacity(0.54f);
-//            g.fillRoundedRectangle(x, 0, width, height + y, corner);
-//            //Slider
-//            g.setColour(pink);
-//            g.fillRoundedRectangle(x,
-//                                   (int) sliderPos,
-//                                   width - x,
-//                                   (height) - ((int) sliderPos - y), corner);
             g.fillRoundedRectangle(x, 2*y, width, height, corner);
             //Slider
             g.setColour(pink);
