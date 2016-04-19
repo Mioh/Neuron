@@ -21,7 +21,7 @@ public:
         std::cout << "init CompressorUnit";
     }
     
-    
+    // From Designing Audio Effect Plug-Ins in C by Will Prinkle
     double calcCompressorGain(float fDetectorValue, float fThreshold,
                             float fRatio, float fKneeWidth, bool bLimit) {
         // slope variable
