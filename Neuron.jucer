@@ -17,7 +17,8 @@
       <FILE id="aSUYxp" name="ModulatedDelayUnit.h" compile="1" resource="0"
             file="Source/ModulatedDelayUnit.h"/>
       <FILE id="kiqof0" name="Phasor.h" compile="1" resource="0" file="Source/Phasor.h"/>
-      <FILE id="zOx7cj" name="OcillatorUnit.h" compile="1" resource="0" file="Source/OcillatorUnit.h"/>
+      <FILE id="zOx7cj" name="OscillatorUnit.h" compile="1" resource="0"
+            file="Source/OscillatorUnit.h"/>
       <FILE id="CkBnlv" name="CustomLook.h" compile="1" resource="0" file="Source/CustomLook.h"/>
       <FILE id="AwYgP2" name="DelayUnit.h" compile="1" resource="0" file="Source/DelayUnit.h"/>
       <FILE id="s72sBH" name="PluginProcessor.cpp" compile="1" resource="0"

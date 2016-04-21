@@ -83,7 +83,6 @@ private:
     ScopedPointer<Slider> m_nUnitsSlider;
     ScopedPointer<Slider> m_depthSlider;
     ScopedPointer<Slider> m_speedSlider;
-    ScopedPointer<TextButton> m_presetButton;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ApdelayAudioProcessorEditor)
 };

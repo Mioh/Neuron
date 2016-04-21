@@ -75,8 +75,9 @@ public:
             pos -= m_maxDelay;
         }
         
-        //Interpolate the signal as the delay could try to access a value
-        //inbetween what is stored in the buffer
+        // Interpolate the signal as one could try to access a value inbetween
+        // what is stored in the buffer as sound waves are continious
+        // while values handled are discrete.
         int index = (int) pos;
         fraction = pos - index;
         previousSampleValue = m_delayBuffer[index];

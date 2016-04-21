@@ -21,7 +21,8 @@ public:
         std::cout << "init CompressorUnit";
     }
     
-    // From Designing Audio Effect Plug-Ins in C by Will Prinkle
+    // From Designing Audio Effect Plug-Ins in C by Will Prinkle, Not currently in use
+    // Pirkle, W. (2012). Designing Audio Effect Plug-Ins in C++. Hoboken: Taylor
     double calcCompressorGain(float fDetectorValue, float fThreshold,
                             float fRatio, float fKneeWidth, bool bLimit) {
         // slope variable

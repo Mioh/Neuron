@@ -88,11 +88,9 @@ public:
                          bool isMouseOverButton, bool isButtonDown)
     {
         if (isMouseOverButton) {
-            Colour green = Colour(0,150,136);
             g.setColour(green);
             g.fillRect(button.getBounds());
         } else {
-            Colour pink = Colour(233,30,99);
             g.setColour(pink);
             g.fillRect(button.getBounds());
         }

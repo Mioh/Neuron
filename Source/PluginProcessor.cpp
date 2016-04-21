@@ -23,20 +23,25 @@ ApdelayAudioProcessor::ApdelayAudioProcessor():
     m_wet(0.5f),
     m_depth(0.2f),
     m_speed(0.2f),
-    m_frequencyDiff(0.5f)
+    m_frequencyDiff(0.2f)
 {
     
+    float frequency;
     for (int i = 0; i < m_maxNumberOfDelays; i++) {
+        // Calculate different oscillator frequencies for different delays
+        frequency = ModulatedDelayUnit::frequencyFromSpeed(m_speed) +
+            (m_frequencyDiff * i);
         
+        //Initialize delays
         m_leftDelay.add(new ModulatedDelayUnit(m_samplerate,
-                                               ModulatedDelayUnit::frequencyFromSpeed(m_speed) + (m_frequencyDiff * i),
-                                               OcillatorUnit::SINE,
+                                               frequency,
+                                               OscillatorUnit::SINE,
                                                m_samplerate,
                                                m_depth));
         
         m_rightDelay.add(new ModulatedDelayUnit(m_samplerate,
-                                                ModulatedDelayUnit::frequencyFromSpeed(m_speed) + (m_frequencyDiff * i),
-                                                OcillatorUnit::SINE,
+                                                frequency,
+                                                OscillatorUnit::SINE,
                                                 m_samplerate,
                                                 m_depth));
     }
@@ -119,8 +124,8 @@ void ApdelayAudioProcessor::setParameter (int index, float value)
         case Speed :
             m_speed = value / 100.0f;
             for (int i = 0; i < m_maxNumberOfDelays; i++) {
-                // Calculate new frequecy from speed percentage and
-                // make all units have different frequencies
+                // Calculate new frequecy from speed percentage and unit number
+                // to make all units have different oscillator rates.
                 float frequency = ModulatedDelayUnit::frequencyFromSpeed(m_speed) +
                 (m_frequencyDiff * i);
                 
@@ -287,12 +292,11 @@ void ApdelayAudioProcessor::releaseResources()
     }
 }
 
-float processSignal(int numberOfDelays, float wet, float input,
-           DelayArray &delayUnit, float delayMS, float feedback)
+float processSignal(DelayArray &delayUnit, int numberOfDelays, float input,
+                    float volumeRatio, float dry, float wet, float delayMS,
+                    float feedback)
 {
-    float dry = 1.0f - wet;
     float output = 0.0f;
-    float volumeRatio = 1.0f / ((float) numberOfDelays);
     
     for (int i = 0; i < numberOfDelays; i++) {
         // Write dry signal to delay buffer
@@ -338,26 +342,34 @@ void ApdelayAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
     
     int blockSize = buffer.getNumSamples();
     
-    // Better spatial locality is achived by having seperate loops for
-    // left and right channel, meaning values accessed are more likely to
-    // still riside in memmory as arrays are traversed
+    //Optimization: calculate following once per block instead of every sample.
+    float dry = 1.0f - m_wet;
+    float volumeRatio = 1.0f / ((float) m_numberOfDelays);
+    
+    // Optimization: Better spatial locality is achived by having seperate loops
+    // for left and right channel, meaning values accessed are more likely to
+    // still riside in memmory as arrays are traversed.
     for (int n = 0; n < blockSize; ++n) {
-        leftChannel[n] = processSignal(m_numberOfDelays,
-                                       m_wet,
+        leftChannel[n] = processSignal(m_leftDelay,
+                                       m_numberOfDelays,
                                        leftChannel[n],
-                                       m_leftDelay,
+                                       volumeRatio,
+                                       dry,
+                                       m_wet,
                                        m_leftDelayMS,
                                        m_leftFeedback);
         
     }
     
     for (int n = 0; n < blockSize; ++n) {
-        rightChannel[n] = processSignal(m_numberOfDelays,
-                                        m_wet,
-                                        rightChannel[n],
-                                        m_rightDelay,
-                                        m_rightDelayMS,
-                                        m_rightFeedback);
+        rightChannel[n] = processSignal(m_rightDelay,
+                                       m_numberOfDelays,
+                                       rightChannel[n],
+                                       volumeRatio,
+                                       dry,
+                                       m_wet,
+                                       m_rightDelayMS,
+                                       m_rightFeedback);
     }
 }
 
