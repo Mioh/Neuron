@@ -20,9 +20,12 @@ thus is each voice given a doppler effect which can be adjusted to taste.
     users from damaging their ears as it reinforces itself.
 - Voices: The number of delay units working in unison with a maximum of 16 units.
 - Dry/Wet: Ratio in percent of the signal is effected by the Neuron plugin.
-- Depth: Percentage of the effect that the oscillator has on the delay time.
-    Note: Not an actual percentage but percentage of the available depth range.
-- Speed: Percentage of the frequency rate available for the oscillator's phase.
+- Depth: Percentage of the depth range available, 0.5 to 10 percent, of which the
+    effect of the oscillator has on the delay time.
+- Speed: Percentage of the available frequency rate range, 5 to 30 hz, in which 
+    the voices oscillators can operate. To give each voice a uniqe rate of 0.2hz
+    multiplied by voice number is added, i.e voice n has a rate of 
+    (rate + 0.2 * (n-1)) hz, where n in {1,2,...16}.
 
 # Presets (Plug-In Host sessions)
 - Init: The initial settings for Neuron with an apple AUMIDISyth connected.
