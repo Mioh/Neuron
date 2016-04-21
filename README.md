@@ -25,7 +25,7 @@ thus is each voice given a doppler effect which can be adjusted to taste.
 - Speed: Percentage of the available frequency rate range, 5 to 30 hz, in which 
     the voices oscillators can operate. To give each voice a uniqe rate, a 
     frequency of 0.2hz multiplied by voice number is added, i.e voice n has a 
-    rate of (rate + 0.2 * (n-1)) hz, where n in {1,2,...16}.
+    rate of (rate + 0.2 * n) hz, where n in {0,1,...15}.
 
 # Presets (Plug-In Host sessions)
 - Init: The initial settings for Neuron with an apple AUMIDISyth connected.
