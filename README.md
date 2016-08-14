@@ -1,9 +1,11 @@
 # NEURON
-Neuron is a multi voice delay unit to use in an audio effect chain. 
-It is meant to operate similar to a regular chorus unit, however, 
-parameters provided allows it more extreme behavior. Each voice is effected by a 
-modulated delay time with a uniqe rate contolled by an oscillator, 
+Neuron is a multi voice delay unit to use in an audio effect chain.
+It is meant to operate similar to a regular chorus unit, however,
+parameters provided allows it more extreme behavior. Each voice is effected by a
+modulated delay time with a unique rate controlled by an oscillator,
 thus is each voice given a doppler effect which can be adjusted to taste.
+
+![alt tag](https://raw.githubusercontent.com/mioh/audioprogramming/master/Neuron.png)
 
 # Input
 - Realtime audio (stereo)
@@ -22,31 +24,31 @@ thus is each voice given a doppler effect which can be adjusted to taste.
 - Dry/Wet: Ratio in percent of the signal is effected by the Neuron plugin.
 - Depth: Percentage of the depth range available, 0.5 to 10 percent, of which the
     effect of the oscillator has on the delay time.
-- Speed: Percentage of the available frequency rate range, 5 to 30 hz, in which 
-    the voices oscillators can operate. To give each voice a uniqe rate, a 
-    frequency of 0.2hz multiplied by voice number is added, i.e voice n has a 
+- Speed: Percentage of the available frequency rate range, 5 to 30 hz, in which
+    the voices oscillators can operate. To give each voice a uniqe rate, a
+    frequency of 0.2hz multiplied by voice number is added, i.e voice n has a
     rate of (rate + 0.2 * n) hz, where n in {0,1,...15}.
 
 # Presets (Plug-In Host sessions)
 - Init: The initial settings for Neuron with an apple AUMIDISyth connected.
 - PlainChorus: Standard chorus settings.
-- MetallicReverb: Utilizes a lot of feedback with low depth and speed to give 
+- MetallicReverb: Utilizes a lot of feedback with low depth and speed to give
     the signal a tail.
 - StereoSpread: Gives the signal a stereo spread with the Haas Effect.
-- Choir: Utilizes all voices with full depth to distinct the voices and a lot of 
-feedback as well as a 1 ms difference between right and left channel to give 
+- Choir: Utilizes all voices with full depth to distinct the voices and a lot of
+feedback as well as a 1 ms difference between right and left channel to give
 the signal width and a reverb illusion and stereo spread.
-- Vibrato: A single voice gives the signal vibrato by having a high oscillation 
+- Vibrato: A single voice gives the signal vibrato by having a high oscillation
     depth.
 
 # Future Work
 - Neruon aspired to increasingly compress the output signal more and more as the
-    chorus mix approaches 100%. However, this feature was de prioritized however 
-    as it turned out to be too ambitious to achieve within the given time frame 
-    of the project but is essential to implement to make Neuron distinguish 
+    chorus mix approaches 100%. However, this feature was de prioritized however
+    as it turned out to be too ambitious to achieve within the given time frame
+    of the project but is essential to implement to make Neuron distinguish
     itself from other plugins.
 - Stereo spread of voices (panning)
-- Possibly add distortion to color the signal even more than what the 
+- Possibly add distortion to color the signal even more than what the
     compression would provide.
 
 # Known Bugs
