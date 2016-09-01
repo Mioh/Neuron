@@ -7,13 +7,16 @@ thus is each voice given a doppler effect which can be adjusted to taste.
 
 ![alt tag](https://raw.githubusercontent.com/mioh/audioprogramming/master/Neuron.png)
 
-# Input
+**Dependencies**
+JUCE v3 (v4 is probably ok) https://www.juce.com/
+
+**Input**
 - Realtime audio (stereo)
 
-# Output
+**Output**
 - Realtime audio (stereo)
 
-# Parameters
+**Parameters**
 - Left Delay: Pre delay time for left channel in milliseconds.
 - Right Delay: Pre delay time for right channel in milliseconds.
 - Left Feedback: Feedback for left channel in percent.
@@ -29,7 +32,7 @@ thus is each voice given a doppler effect which can be adjusted to taste.
     frequency of 0.2hz multiplied by voice number is added, i.e voice n has a
     rate of (rate + 0.2 * n) hz, where n in {0,1,...15}.
 
-# Presets (Plug-In Host sessions)
+**Presets (Plug-In Host sessions)**
 - Init: The initial settings for Neuron with an apple AUMIDISyth connected.
 - PlainChorus: Standard chorus settings.
 - MetallicReverb: Utilizes a lot of feedback with low depth and speed to give
@@ -41,7 +44,7 @@ the signal width and a reverb illusion and stereo spread.
 - Vibrato: A single voice gives the signal vibrato by having a high oscillation
     depth.
 
-# Future Work
+**Future Work**
 - Neruon aspired to increasingly compress the output signal more and more as the
     chorus mix approaches 100%. However, this feature was de prioritized however
     as it turned out to be too ambitious to achieve within the given time frame
@@ -51,5 +54,5 @@ the signal width and a reverb illusion and stereo spread.
 - Possibly add distortion to color the signal even more than what the
     compression would provide.
 
-# Known Bugs
+**Known Bugs**
 none
